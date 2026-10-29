@@ -1,13 +1,9 @@
 // BCA Sathi — app logic
-// Loads content from /data.json (admin-editable) with data.js as fallback.
-
 const page = document.body.dataset.page;
 const params = new URLSearchParams(location.search);
 
-// ---------- State ----------
 let BCA_DATA = { semesters: [] };
 
-// ---------- Load data.json with fallback ----------
 async function loadData() {
   try {
     const res = await fetch("/data.json", { cache: "no-cache" });
@@ -21,7 +17,6 @@ async function loadData() {
   }
 }
 
-// ---------- Helpers ----------
 function el(tag, cls, html) {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -44,14 +39,12 @@ function escapeHtml(str) {
   }[c]));
 }
 
-// ---------- Shared: fill semester dropdown ----------
 function fillDropdown() {
   const dd = document.getElementById("semesterDropdown");
   if (!dd) return;
   dd.innerHTML = "";
   BCA_DATA.semesters
-    .slice()
-    .sort((a, b) => a.id - b.id)
+    .slice().sort((a, b) => a.id - b.id)
     .forEach(s => {
       const a = el("a", null, `Semester ${s.id}`);
       a.href = `semester.html?sem=${s.id}`;
@@ -59,15 +52,13 @@ function fillDropdown() {
     });
 }
 
-// ---------- HOME ----------
 function renderHome() {
   const grid = document.getElementById("semesterGrid");
   if (!grid) return;
   grid.innerHTML = "";
 
   BCA_DATA.semesters
-    .slice()
-    .sort((a, b) => a.id - b.id)
+    .slice().sort((a, b) => a.id - b.id)
     .forEach(s => {
       const card = el("a", "sem-card");
       card.href = `semester.html?sem=${s.id}`;
@@ -84,7 +75,6 @@ function renderHome() {
     });
 }
 
-// ---------- SEMESTER ----------
 function renderSemester() {
   const semId = params.get("sem");
   const sem = findSemester(semId);
@@ -116,7 +106,7 @@ function renderSemester() {
     card.innerHTML = `
       <div class="subj-head">
         <h3>${escapeHtml(sub.name)}</h3>
-        ${sub.code ? `<span class="subj-code">${escapeHtml(sub.code)}</span>` : ""}
+        ${sub.code ? `<span class="subj-code">${escapeHtml(sub.code)}${sub.credits ? ` · ${sub.credits}cr` : ""}</span>` : ""}
       </div>
       <div class="subj-links">
         <a class="chip chip-notes" href="subject.html?sem=${sem.id}&sub=${encodeURIComponent(sub.id)}#notes">📄 Notes (${notesCount})</a>
@@ -128,7 +118,6 @@ function renderSemester() {
   });
 }
 
-// ---------- SUBJECT ----------
 function renderSubject() {
   const semId = params.get("sem");
   const subjId = params.get("sub");
@@ -138,7 +127,7 @@ function renderSubject() {
   if (!sem || !sub) {
     document.getElementById("subjTitle").textContent = "Subject not found";
     document.getElementById("bcSubject").innerHTML =
-      `<a href="index.html">Home</a> / <a href="semester.html?sem=${escapeHtml(semId || "")}">Semester</a> / <span>Not found</span>`;
+      `<a href="index.html">Home</a> / <span>Not found</span>`;
     return;
   }
 
@@ -147,7 +136,7 @@ function renderSubject() {
     `<a href="index.html">Home</a> / <a href="semester.html?sem=${sem.id}">Semester ${sem.id}</a> / <span>${escapeHtml(sub.name)}</span>`;
   document.getElementById("subjTitle").textContent = sub.name;
   document.getElementById("subjCode").textContent =
-    sub.code ? `Subject Code: ${sub.code}` : "";
+    sub.code ? `Subject Code: ${sub.code}${sub.credits ? ` · ${sub.credits} credits` : ""}` : "";
 
   const tabs = document.querySelectorAll(".tab");
   tabs.forEach(t => {
@@ -163,7 +152,7 @@ function renderSubject() {
   tabBtn.click();
 }
 
-function renderTab(tab, sub, sem) {
+async function renderTab(tab, sub, sem) {
   const c = document.getElementById("tabContent");
   c.innerHTML = "";
 
@@ -184,6 +173,7 @@ function renderTab(tab, sub, sem) {
       `;
       c.appendChild(row);
     });
+    return;
   }
 
   if (tab === "notes") {
@@ -203,26 +193,78 @@ function renderTab(tab, sub, sem) {
       `;
       c.appendChild(row);
     });
+    return;
   }
 
   if (tab === "syllabus") {
-    if (!sub.syllabus) {
-      c.innerHTML = `<p class="empty">Syllabus not uploaded yet.</p>`;
-      return;
-    }
-    c.innerHTML = `
+    await renderSyllabusTab(sub, c);
+  }
+}
+
+async function renderSyllabusTab(sub, container) {
+  container.innerHTML = `<p class="muted">Loading syllabus…</p>`;
+  const parts = [];
+
+  if (sub.syllabus && sub.syllabus.file) {
+    parts.push(`
       <div class="resource-row">
-        <div><strong>Official TU Syllabus</strong></div>
+        <div><strong>Official Syllabus PDF</strong></div>
         <div class="row-actions">
           <span class="muted">${sub.syllabus.sizeMB || "?"} MB</span>
           <a class="btn btn-sm" href="${escapeHtml(sub.syllabus.file)}" target="_blank" rel="noopener">Download PDF</a>
         </div>
       </div>
-    `;
+    `);
+  }
+
+  if (sub.syllabusData) {
+    try {
+      const res = await fetch(sub.syllabusData, { cache: "no-cache" });
+      if (!res.ok) throw new Error("Not found");
+      const data = await res.json();
+      parts.push(renderSyllabusHtml(data));
+    } catch (e) {
+      console.warn("[BCA Sathi] Syllabus data missing:", sub.syllabusData);
+      parts.push(`<p class="empty">Structured syllabus not available yet.</p>`);
+    }
+  }
+
+  if (parts.length === 0) {
+    container.innerHTML = `<p class="empty">Syllabus not uploaded yet.</p>`;
+  } else {
+    container.innerHTML = parts.join("");
   }
 }
 
-// ---------- Init ----------
+function renderSyllabusHtml(data) {
+  const units = (data.units || []).map(u => `
+    <div class="syllabus-unit">
+      <div class="unit-head">
+        <span class="unit-num">Unit ${u.number}</span>
+        <strong class="unit-title">${escapeHtml(u.title)}</strong>
+        ${u.hours ? `<span class="unit-hours">${u.hours} hrs</span>` : ""}
+      </div>
+      ${u.topics && u.topics.length ? `
+        <ul class="unit-topics">
+          ${u.topics.map(t => `<li>${escapeHtml(t)}</li>`).join("")}
+        </ul>
+      ` : ""}
+    </div>
+  `).join("");
+
+  return `
+    <div class="syllabus-card">
+      <div class="syllabus-meta">
+        <span class="syllabus-code">${escapeHtml(data.code || "")}</span>
+        ${data.credits ? `<span class="syllabus-badge">${data.credits} credits</span>` : ""}
+        ${data.totalHours ? `<span class="syllabus-badge">${data.totalHours} hrs total</span>` : ""}
+      </div>
+      ${data.description ? `<p class="syllabus-desc">${escapeHtml(data.description)}</p>` : ""}
+      <div class="syllabus-units">${units}</div>
+    </div>
+  `;
+}
+
 loadData().then(() => {
   fillDropdown();
   if (page === "home") renderHome();
