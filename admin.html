@@ -70,6 +70,17 @@
       box-shadow: 0 0 0 3px rgba(30, 90, 168, 0.12);
     }
     .field .hint { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+    .field .hint code {
+      background: var(--gold-soft); padding: 1px 5px; border-radius: 4px;
+      font-size: 0.75rem; color: #7a6118;
+    }
+
+    .notice {
+      padding: 12px 14px; border-radius: 8px; font-size: 0.82rem;
+      margin-bottom: 16px; line-height: 1.5;
+    }
+    .notice.info { background: #f5f9ff; border-left: 3px solid var(--blue); color: #1a3a5c; }
+    .notice.warn { background: #fff8e1; border-left: 3px solid var(--gold); color: #5a4a18; }
 
     .type-cards {
       display: grid; grid-template-columns: repeat(3, 1fr);
@@ -143,7 +154,6 @@
     }
     .result-links a:hover { background: var(--green-soft); }
 
-    /* Diagnostic box */
     .diag {
       display: none; margin-top: 12px; padding: 12px;
       background: #fff8e1; border-left: 3px solid var(--gold);
@@ -176,18 +186,26 @@
 
   <div class="card" id="setupCard" style="display:none;">
     <h2>🔑 GitHub Connection</h2>
+
+    <div class="notice info">
+      <strong>Use a Classic token.</strong> Fine-grained tokens often cause 404 errors because
+      they require the repo to be explicitly selected. Classic tokens with <code>repo</code>
+      scope work immediately.
+    </div>
+
     <div class="field">
       <label>GitHub Token <span class="req">*</span></label>
-      <input id="patInput" type="password" placeholder="github_pat_... or ghp_...">
+      <input id="patInput" type="password" placeholder="ghp_...">
       <p class="hint">
-        Fine-grained token needs <strong>Contents: Read and write</strong> and the repo explicitly selected.
-        Classic token needs <strong>repo</strong> scope. Stored in this browser only.
+        Create one at <strong>github.com/settings/tokens</strong> →
+        <em>Generate new token (classic)</em> → check <code>repo</code> → generate.<br>
+        Must start with <code>ghp_</code>. Stored in this browser only.
       </p>
     </div>
     <div class="field">
       <label>Repository <span class="req">*</span></label>
-      <input id="repoInput" type="text" placeholder="username/bca-sathi">
-      <p class="hint">Format: <strong>owner/repo</strong> — e.g. <code>sujal/bca-sathi</code></p>
+      <input id="repoInput" type="text" placeholder="M0NETIZE101/BCA-Sathi">
+      <p class="hint">Format: <strong>owner/repo</strong> — case-sensitive</p>
     </div>
     <button class="btn btn-primary" id="saveConn" style="width:100%;">Save & Connect</button>
     <div class="diag" id="diagBox"></div>
@@ -305,7 +323,7 @@
 
 <script>
 // ============================================================
-// BCA Sathi — Admin Panel (hardened error handling)
+// BCA Sathi — Admin Panel (classic token edition)
 // ============================================================
 const $ = id => document.getElementById(id);
 const state = {
@@ -316,7 +334,6 @@ const state = {
   selectedFile: null,
 };
 
-// ---------- Toast ----------
 let toastTimer;
 function toast(msg, type = "ok") {
   const t = $("toast");
@@ -326,15 +343,14 @@ function toast(msg, type = "ok") {
   toastTimer = setTimeout(() => t.className = "toast", 6000);
 }
 
-// ---------- Diagnostics ----------
 function diag(msg) {
   const box = $("diagBox");
   if (!box) return;
+  if (!msg) { box.classList.remove("active"); box.textContent = ""; return; }
   box.classList.add("active");
   box.textContent = msg;
 }
 
-// ---------- Base64 helpers (UTF-8 safe) ----------
 function b64DecodeUnicode(str) {
   const clean = String(str).replace(/\s/g, "");
   const bytes = Uint8Array.from(atob(clean), c => c.charCodeAt(0));
@@ -347,7 +363,6 @@ function b64EncodeUnicode(str) {
   return btoa(binary);
 }
 
-// ---------- Safe JSON parse ----------
 function safeJsonParse(text, label) {
   try {
     return JSON.parse(text);
@@ -358,7 +373,6 @@ function safeJsonParse(text, label) {
   }
 }
 
-// ---------- GitHub API with safe error handling ----------
 async function gh(path, opts = {}) {
   const url = `https://api.github.com/repos/${state.repo}/${path}`;
   let res;
@@ -373,45 +387,33 @@ async function gh(path, opts = {}) {
       },
     });
   } catch (netErr) {
-    console.error("[GH NETWORK ERROR]", url, netErr);
-    throw new Error(`Network error reaching GitHub. Check your connection or if the token/repo is correct. (${netErr.message})`);
+    throw new Error(`Network error reaching GitHub. Check your connection. (${netErr.message})`);
   }
-
   console.log(`[GH] ${opts.method || "GET"} ${path} → ${res.status} ${res.statusText}`);
-
-  // Attach a helper so callers can read the error body safely
   res._safeText = async () => {
-    try {
-      const t = await res.clone().text();
-      return t;
-    } catch {
-      return "(could not read response body)";
-    }
+    try { return await res.clone().text(); } catch { return "(unreadable)"; }
   };
-
   return res;
 }
 
-// ---------- API: fetch data.json ----------
 async function fetchDataJson() {
   const res = await gh("contents/data.json");
 
   if (res.status === 401) {
-    throw new Error("Token is invalid or expired (401). Create a new token and try again.");
+    throw new Error("Token is invalid or expired (401). Generate a new classic token with 'repo' scope.");
   }
   if (res.status === 403) {
     const body = await res._safeText();
-    throw new Error(`Token lacks permission (403). Fine-grained tokens need Contents: Read and write, and the repo must be explicitly selected. GitHub said: ${body.slice(0, 120)}`);
+    throw new Error(`Token lacks permission (403). A classic token needs the 'repo' scope checked. GitHub said: ${body.slice(0, 120)}`);
   }
   if (res.status === 404) {
-    throw new Error("Repository or data.json not found (404). Check: (1) repo name format owner/repo, (2) token has this repo selected, (3) data.json exists in the repo root.");
+    throw new Error(`404 Not Found. Most common causes:\n• Repo name is wrong (must be exactly M0NETIZE101/BCA-Sathi)\n• Token is fine-grained and doesn't have this repo selected — switch to a classic token with 'repo' scope\n• data.json is not in the repo root`);
   }
   if (!res.ok) {
     const body = await res._safeText();
     throw new Error(`GitHub returned ${res.status}: ${body.slice(0, 200)}`);
   }
 
-  // Success — parse safely
   const json = await res.json().catch(async () => {
     const body = await res._safeText();
     throw new Error(`GitHub sent non-JSON response: ${body.slice(0, 200)}`);
@@ -433,9 +435,7 @@ async function fetchDataJson() {
   return parsed;
 }
 
-// ---------- API: put any file ----------
 async function putFile(path, base64Content, message) {
-  // Get existing sha if any
   let sha = null;
   const check = await gh(`contents/${path}`);
   if (check.ok) {
@@ -461,7 +461,6 @@ async function putFile(path, base64Content, message) {
   return res.json().catch(() => ({}));
 }
 
-// ---------- API: put data.json ----------
 async function putDataJson(obj, message) {
   const content = b64EncodeUnicode(JSON.stringify(obj, null, 2));
   const body = { message, content, branch: "main", sha: state.dataSha };
@@ -478,7 +477,6 @@ async function putDataJson(obj, message) {
   return res.json().catch(() => ({}));
 }
 
-// ---------- Connection UI ----------
 function refreshConnUI() {
   const bar = $("connBar");
   const text = $("connText");
@@ -501,8 +499,8 @@ function refreshConnUI() {
 $("changeConn").onclick = () => {
   $("setupCard").style.display = "block";
   $("patInput").value = "";
-  $("repoInput").value = state.repo;
-  $("diagBox").classList.remove("active");
+  $("repoInput").value = state.repo || "M0NETIZE101/BCA-Sathi";
+  diag("");
   $("patInput").focus();
 };
 
@@ -511,15 +509,23 @@ $("saveConn").onclick = async () => {
   const repo = $("repoInput").value.trim();
 
   diag("");
+
   if (!pat) return toast("Enter a GitHub token", "error");
-  if (!pat.startsWith("ghp_") && !pat.startsWith("github_pat_")) {
-    return toast("Token must start with ghp_ or github_pat_", "error");
+
+  if (pat.startsWith("github_pat_")) {
+    const msg = "You pasted a fine-grained token (github_pat_...). These cause 404 errors unless the repo is explicitly selected on the token. Create a Classic token instead: github.com/settings/tokens → Generate new token (classic) → check 'repo' → generate.";
+    diag(`❌ ${msg}`);
+    return toast(msg, "error");
   }
-  if (!repo || !repo.includes("/")) {
-    return toast("Repo must be in owner/repo format", "error");
+  if (!pat.startsWith("ghp_")) {
+    const msg = "Token must start with ghp_. Classic tokens always start with ghp_.";
+    diag(`❌ ${msg}`);
+    return toast(msg, "error");
   }
-  if (repo.split("/").length !== 2) {
-    return toast("Repo must be exactly owner/repo (one slash)", "error");
+  if (!repo || !repo.includes("/") || repo.split("/").length !== 2) {
+    const msg = "Repo must be exactly owner/repo (one slash), e.g. M0NETIZE101/BCA-Sathi";
+    diag(`❌ ${msg}`);
+    return toast(msg, "error");
   }
 
   state.pat = pat;
@@ -550,7 +556,6 @@ $("saveConn").onclick = async () => {
   }
 };
 
-// ---------- Populate dropdowns ----------
 async function loadDataAndPopulate() {
   try {
     await fetchDataJson();
@@ -626,7 +631,6 @@ $("subjSelect").onchange = () => {
   updateSubmitState();
 };
 
-// ---------- Type selection ----------
 document.querySelectorAll('input[name="type"]').forEach(r => {
   r.onchange = () => {
     const type = r.value;
@@ -639,7 +643,6 @@ document.querySelectorAll('input[name="type"]').forEach(r => {
   };
 });
 
-// ---------- File selection ----------
 const dropzone = $("dropzone");
 const fileInput = $("fileInput");
 const fileInfo = $("fileInfo");
@@ -678,7 +681,6 @@ function handleFile(file) {
   updateSubmitState();
 }
 
-// ---------- Submit state ----------
 function updateSubmitState() {
   const btn = $("submitBtn");
   const semOk = !!$("semSelect").value;
@@ -702,7 +704,6 @@ function updateSubmitState() {
   $(id).addEventListener("input", updateSubmitState);
 });
 
-// ---------- Upload ----------
 $("uploadForm").onsubmit = async (e) => {
   e.preventDefault();
   const btn = $("submitBtn");
@@ -753,7 +754,7 @@ $("uploadForm").onsubmit = async (e) => {
     await putFile(pdfPath, pdfB64, `Add ${filename} to ${subjectId}`);
 
     toast("Updating manifest…", "info");
-    await fetchDataJson(); // fresh sha
+    await fetchDataJson();
 
     const data = state.dataJson;
     const sem = data.semesters.find(s => s.id === semId);
@@ -823,7 +824,6 @@ function fileToBase64(file) {
   });
 }
 
-// ---------- Init ----------
 refreshConnUI();
 </script>
 </body>
