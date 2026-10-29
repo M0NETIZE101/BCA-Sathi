@@ -1,7 +1,8 @@
-// BCA Sathi — content data
-// Edit this file to add/update resources. This is the ONLY file you edit for content.
+// BCA Sathi — static fallback data
+// Used only if /data.json fails to load. The admin panel writes to data.json,
+// not this file. Keep this in sync occasionally as a safety net.
 
-const BCA_DATA = {
+window.BCA_DATA_STATIC = {
   semesters: [
     {
       id: 1,
