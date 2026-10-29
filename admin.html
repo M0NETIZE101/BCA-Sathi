@@ -17,7 +17,6 @@
     body { background: #fffdf6; }
     .admin-wrap { max-width: 680px; margin: 0 auto; padding: 24px 16px 80px; }
 
-    /* ---- Connection bar ---- */
     .conn-bar {
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
       background: #fff; border: 1px solid var(--border); border-radius: 10px;
@@ -25,16 +24,17 @@
     }
     .conn-bar.ok { border-color: #c8e6c9; background: var(--green-soft); }
     .conn-bar.warn { border-color: #ffe082; background: var(--gold-soft); }
+    .conn-bar.err { border-color: #f5b7b1; background: var(--red-soft); }
     .conn-info { display: flex; align-items: center; gap: 8px; }
     .conn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
     .conn-bar.ok .conn-dot { background: var(--green); }
     .conn-bar.warn .conn-dot { background: var(--gold); }
+    .conn-bar.err .conn-dot { background: var(--red); }
     .btn-link {
       background: none; border: none; color: var(--blue); font-size: 0.82rem;
       cursor: pointer; font-family: inherit; text-decoration: underline; padding: 0;
     }
 
-    /* ---- Cards ---- */
     .card {
       background: #fff; border: 1px solid var(--border); border-radius: 12px;
       padding: 20px; margin-bottom: 16px;
@@ -50,7 +50,6 @@
       font-size: 0.72rem; font-weight: 700;
     }
 
-    /* ---- Fields ---- */
     .field { margin-bottom: 14px; }
     .field:last-child { margin-bottom: 0; }
     .field label {
@@ -72,7 +71,6 @@
     }
     .field .hint { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
 
-    /* ---- Type cards ---- */
     .type-cards {
       display: grid; grid-template-columns: repeat(3, 1fr);
       gap: 8px; margin-bottom: 16px;
@@ -92,11 +90,9 @@
     .type-label { font-size: 0.83rem; font-weight: 700; color: var(--text); }
     .type-hint { font-size: 0.7rem; color: var(--muted); }
 
-    /* ---- Conditional fields ---- */
     .conditional { display: none; }
     .conditional.active { display: block; }
 
-    /* ---- Drop zone ---- */
     .dropzone {
       border: 2px dashed var(--border); border-radius: 10px;
       padding: 24px; text-align: center; cursor: pointer;
@@ -118,28 +114,21 @@
     .file-info strong { color: var(--text); }
     .file-info.error { background: var(--red-soft); border-color: #f5b7b1; color: var(--red); }
 
-    /* ---- Submit ---- */
-    .submit-row {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px; margin-top: 20px;
-    }
-    .btn-upload {
-      flex: 1; padding: 14px 20px; font-size: 0.95rem;
-    }
+    .submit-row { margin-top: 20px; }
+    .btn-upload { width: 100%; padding: 14px 20px; font-size: 0.95rem; }
     .btn-upload:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* ---- Toast ---- */
     .toast {
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
       background: var(--text); color: #fff; padding: 12px 20px;
       border-radius: 10px; font-size: 0.88rem; box-shadow: 0 6px 24px rgba(0,0,0,0.15);
-      display: none; max-width: 90vw; z-index: 1000;
+      display: none; max-width: 90vw; z-index: 1000; white-space: pre-line;
     }
     .toast.active { display: block; }
     .toast.ok { background: var(--green); }
     .toast.error { background: var(--red); }
+    .toast.info { background: var(--blue); }
 
-    /* ---- Result panel ---- */
     .result {
       display: none; background: var(--green-soft); border: 1px solid #c8e6c9;
       border-radius: 10px; padding: 16px; margin-top: 16px;
@@ -153,6 +142,15 @@
       text-decoration: none; font-weight: 600;
     }
     .result-links a:hover { background: var(--green-soft); }
+
+    /* Diagnostic box */
+    .diag {
+      display: none; margin-top: 12px; padding: 12px;
+      background: #fff8e1; border-left: 3px solid var(--gold);
+      border-radius: 4px; font-size: 0.8rem; font-family: monospace;
+      color: #5a4a18; white-space: pre-wrap; word-break: break-all;
+    }
+    .diag.active { display: block; }
 
     @media (max-width: 520px) {
       .type-cards { grid-template-columns: 1fr; }
@@ -168,7 +166,6 @@
     Add notes, past papers, or syllabus to BCA Sathi.
   </p>
 
-  <!-- Connection bar -->
   <div class="conn-bar warn" id="connBar">
     <div class="conn-info">
       <span class="conn-dot"></span>
@@ -177,34 +174,34 @@
     <button class="btn-link" id="changeConn">Setup</button>
   </div>
 
-  <!-- Connection setup -->
   <div class="card" id="setupCard" style="display:none;">
     <h2>🔑 GitHub Connection</h2>
     <div class="field">
       <label>GitHub Token <span class="req">*</span></label>
-      <input id="patInput" type="password" placeholder="ghp_...">
-      <p class="hint">Create at github.com/settings/tokens with <strong>repo</strong> scope. Stored in this browser only.</p>
+      <input id="patInput" type="password" placeholder="github_pat_... or ghp_...">
+      <p class="hint">
+        Fine-grained token needs <strong>Contents: Read and write</strong> and the repo explicitly selected.
+        Classic token needs <strong>repo</strong> scope. Stored in this browser only.
+      </p>
     </div>
     <div class="field">
       <label>Repository <span class="req">*</span></label>
       <input id="repoInput" type="text" placeholder="username/bca-sathi">
+      <p class="hint">Format: <strong>owner/repo</strong> — e.g. <code>sujal/bca-sathi</code></p>
     </div>
     <button class="btn btn-primary" id="saveConn" style="width:100%;">Save & Connect</button>
+    <div class="diag" id="diagBox"></div>
   </div>
 
-  <!-- Upload form -->
   <form id="uploadForm" style="display:none;">
-    <!-- Step 1: Location -->
     <div class="card">
       <h2><span class="step">1</span> Where does it belong?</h2>
-
       <div class="field">
         <label>Semester <span class="req">*</span></label>
         <select id="semSelect" required>
           <option value="">Choose semester…</option>
         </select>
       </div>
-
       <div class="field">
         <label>Subject <span class="req">*</span></label>
         <select id="subjSelect" required disabled>
@@ -212,8 +209,6 @@
         </select>
         <p class="hint" id="subjHint"></p>
       </div>
-
-      <!-- New subject fields -->
       <div id="newSubjectFields" class="conditional">
         <div class="field">
           <label>New Subject Name <span class="req">*</span></label>
@@ -232,10 +227,8 @@
       </div>
     </div>
 
-    <!-- Step 2: Resource type -->
     <div class="card">
       <h2><span class="step">2</span> What are you uploading?</h2>
-
       <div class="type-cards">
         <label>
           <input type="radio" name="type" value="papers">
@@ -263,20 +256,17 @@
         </label>
       </div>
 
-      <!-- Conditional: Past paper -->
       <div id="fieldYear" class="field conditional">
         <label>Exam Year (B.S.) <span class="req">*</span></label>
         <input id="yearInput" type="number" min="2070" max="2100" placeholder="e.g. 2082">
         <p class="hint">The year the exam was held (Nepali calendar).</p>
       </div>
 
-      <!-- Conditional: Notes -->
       <div id="fieldTitle" class="field conditional">
         <label>Note Title <span class="req">*</span></label>
         <input id="titleInput" type="text" placeholder="e.g. Unit 1: Introduction to Computers">
       </div>
 
-      <!-- Conditional: Syllabus warning -->
       <div id="fieldSyllabusWarn" class="conditional">
         <p class="hint" style="padding:10px;background:#fff8e1;border-left:3px solid var(--gold);border-radius:4px;">
           ⚠️ Replacing an existing syllabus for this subject will overwrite it.
@@ -284,28 +274,23 @@
       </div>
     </div>
 
-    <!-- Step 3: File -->
     <div class="card">
       <h2><span class="step">3</span> Select the PDF</h2>
-
       <div class="dropzone" id="dropzone">
         <input type="file" id="fileInput" accept="application/pdf">
         <div class="dropzone-icon">📄</div>
         <div class="dropzone-text">Click to choose a PDF, or drag it here</div>
         <div class="dropzone-hint">Max 20 MB · PDF only</div>
       </div>
-
       <div class="file-info" id="fileInfo"></div>
     </div>
 
-    <!-- Submit -->
     <div class="submit-row">
       <button type="submit" class="btn btn-primary btn-upload" id="submitBtn" disabled>
         Upload & Publish
       </button>
     </div>
 
-    <!-- Result -->
     <div class="result" id="result">
       <h3>✅ Uploaded successfully</h3>
       <p class="muted" style="font-size:0.83rem;margin:0;">
@@ -320,14 +305,14 @@
 
 <script>
 // ============================================================
-// BCA Sathi — Admin Panel
+// BCA Sathi — Admin Panel (hardened error handling)
 // ============================================================
 const $ = id => document.getElementById(id);
 const state = {
   pat: localStorage.getItem("gh_pat") || "",
   repo: localStorage.getItem("gh_repo") || "",
-  dataJson: null,       // cached parsed data.json
-  dataSha: null,        // sha of data.json (for updates)
+  dataJson: null,
+  dataSha: null,
   selectedFile: null,
 };
 
@@ -338,7 +323,15 @@ function toast(msg, type = "ok") {
   t.textContent = msg;
   t.className = `toast active ${type}`;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.className = "toast", 4000);
+  toastTimer = setTimeout(() => t.className = "toast", 6000);
+}
+
+// ---------- Diagnostics ----------
+function diag(msg) {
+  const box = $("diagBox");
+  if (!box) return;
+  box.classList.add("active");
+  box.textContent = msg;
 }
 
 // ---------- Base64 helpers (UTF-8 safe) ----------
@@ -354,60 +347,138 @@ function b64EncodeUnicode(str) {
   return btoa(binary);
 }
 
-// ---------- GitHub API ----------
+// ---------- Safe JSON parse ----------
+function safeJsonParse(text, label) {
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    const preview = String(text).slice(0, 200).replace(/\n/g, " ");
+    console.error(`[PARSE FAIL] ${label}:`, preview);
+    throw new Error(`${label} is not valid JSON. Preview: ${preview}`);
+  }
+}
+
+// ---------- GitHub API with safe error handling ----------
 async function gh(path, opts = {}) {
-  const res = await fetch(`https://api.github.com/repos/${state.repo}/${path}`, {
-    ...opts,
-    headers: {
-      "Authorization": `Bearer ${state.pat}`,
-      "Accept": "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      ...(opts.headers || {}),
-    },
-  });
+  const url = `https://api.github.com/repos/${state.repo}/${path}`;
+  let res;
+  try {
+    res = await fetch(url, {
+      ...opts,
+      headers: {
+        "Authorization": `Bearer ${state.pat}`,
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        ...(opts.headers || {}),
+      },
+    });
+  } catch (netErr) {
+    console.error("[GH NETWORK ERROR]", url, netErr);
+    throw new Error(`Network error reaching GitHub. Check your connection or if the token/repo is correct. (${netErr.message})`);
+  }
+
+  console.log(`[GH] ${opts.method || "GET"} ${path} → ${res.status} ${res.statusText}`);
+
+  // Attach a helper so callers can read the error body safely
+  res._safeText = async () => {
+    try {
+      const t = await res.clone().text();
+      return t;
+    } catch {
+      return "(could not read response body)";
+    }
+  };
+
   return res;
 }
 
+// ---------- API: fetch data.json ----------
 async function fetchDataJson() {
-  const res = await gh(`contents/data.json`);
-  if (!res.ok) throw new Error(`Could not read data.json (${res.status})`);
-  const json = await res.json();
+  const res = await gh("contents/data.json");
+
+  if (res.status === 401) {
+    throw new Error("Token is invalid or expired (401). Create a new token and try again.");
+  }
+  if (res.status === 403) {
+    const body = await res._safeText();
+    throw new Error(`Token lacks permission (403). Fine-grained tokens need Contents: Read and write, and the repo must be explicitly selected. GitHub said: ${body.slice(0, 120)}`);
+  }
+  if (res.status === 404) {
+    throw new Error("Repository or data.json not found (404). Check: (1) repo name format owner/repo, (2) token has this repo selected, (3) data.json exists in the repo root.");
+  }
+  if (!res.ok) {
+    const body = await res._safeText();
+    throw new Error(`GitHub returned ${res.status}: ${body.slice(0, 200)}`);
+  }
+
+  // Success — parse safely
+  const json = await res.json().catch(async () => {
+    const body = await res._safeText();
+    throw new Error(`GitHub sent non-JSON response: ${body.slice(0, 200)}`);
+  });
+
+  if (!json || !json.content) {
+    throw new Error("GitHub response is missing file content. data.json may be empty or corrupted.");
+  }
+
   const text = b64DecodeUnicode(json.content);
-  state.dataJson = JSON.parse(text);
+  const parsed = safeJsonParse(text, "data.json");
+
+  if (!parsed || !Array.isArray(parsed.semesters)) {
+    throw new Error("data.json has an invalid structure (missing 'semesters' array).");
+  }
+
+  state.dataJson = parsed;
   state.dataSha = json.sha;
-  return state.dataJson;
+  return parsed;
 }
 
+// ---------- API: put any file ----------
 async function putFile(path, base64Content, message) {
   // Get existing sha if any
   let sha = null;
   const check = await gh(`contents/${path}`);
   if (check.ok) {
-    const existing = await check.json();
-    sha = existing.sha;
+    const existing = await check.json().catch(() => null);
+    if (existing && existing.sha) sha = existing.sha;
+  } else if (check.status !== 404) {
+    const body = await check._safeText();
+    throw new Error(`Could not check existing ${path} (${check.status}): ${body.slice(0, 150)}`);
   }
+
   const body = { message, content: base64Content, branch: "main" };
   if (sha) body.sha = sha;
-  const res = await gh(`contents/${path}`, { method: "PUT", body: JSON.stringify(body) });
+
+  const res = await gh(`contents/${path}`, {
+    method: "PUT",
+    body: JSON.stringify(body),
+  });
+
   if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`GitHub ${res.status}: ${err.slice(0, 200)}`);
+    const errText = await res._safeText();
+    throw new Error(`Failed to upload ${path} (${res.status}): ${errText.slice(0, 200)}`);
   }
-  return res.json();
+  return res.json().catch(() => ({}));
 }
 
+// ---------- API: put data.json ----------
 async function putDataJson(obj, message) {
   const content = b64EncodeUnicode(JSON.stringify(obj, null, 2));
   const body = { message, content, branch: "main", sha: state.dataSha };
-  const res = await gh(`contents/data.json`, { method: "PUT", body: JSON.stringify(body) });
+
+  const res = await gh(`contents/data.json`, {
+    method: "PUT",
+    body: JSON.stringify(body),
+  });
+
   if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Failed to update data.json (${res.status}): ${err.slice(0, 200)}`);
+    const errText = await res._safeText();
+    throw new Error(`Failed to update data.json (${res.status}): ${errText.slice(0, 200)}`);
   }
-  return res.json();
+  return res.json().catch(() => ({}));
 }
 
-// ---------- Connection ----------
+// ---------- Connection UI ----------
 function refreshConnUI() {
   const bar = $("connBar");
   const text = $("connText");
@@ -431,50 +502,73 @@ $("changeConn").onclick = () => {
   $("setupCard").style.display = "block";
   $("patInput").value = "";
   $("repoInput").value = state.repo;
+  $("diagBox").classList.remove("active");
   $("patInput").focus();
 };
 
 $("saveConn").onclick = async () => {
   const pat = $("patInput").value.trim();
   const repo = $("repoInput").value.trim();
-  if (!pat || !pat.startsWith("ghp_") && !pat.startsWith("github_pat_")) {
-    return toast("Enter a valid GitHub token", "error");
+
+  diag("");
+  if (!pat) return toast("Enter a GitHub token", "error");
+  if (!pat.startsWith("ghp_") && !pat.startsWith("github_pat_")) {
+    return toast("Token must start with ghp_ or github_pat_", "error");
   }
   if (!repo || !repo.includes("/")) {
-    return toast("Repo must be owner/repo format", "error");
+    return toast("Repo must be in owner/repo format", "error");
   }
+  if (repo.split("/").length !== 2) {
+    return toast("Repo must be exactly owner/repo (one slash)", "error");
+  }
+
   state.pat = pat;
   state.repo = repo;
-  localStorage.setItem("gh_pat", pat);
-  localStorage.setItem("gh_repo", repo);
+
+  const saveBtn = $("saveConn");
+  saveBtn.disabled = true;
+  saveBtn.textContent = "Connecting…";
+
   try {
     await fetchDataJson();
+    localStorage.setItem("gh_pat", pat);
+    localStorage.setItem("gh_repo", repo);
     refreshConnUI();
-    toast("Connected successfully", "ok");
+    toast(`Connected to ${repo}`, "ok");
   } catch (err) {
-    toast(`Connection failed: ${err.message}`, "error");
-    state.pat = ""; state.repo = "";
+    console.error("[CONNECT FAIL]", err);
+    const msg = err.message || "Unknown error";
+    diag(`❌ ${msg}`);
+    toast(`Connection failed:\n${msg}`, "error");
+    state.pat = "";
+    state.repo = "";
     localStorage.removeItem("gh_pat");
     localStorage.removeItem("gh_repo");
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = "Save & Connect";
   }
 };
 
-// ---------- Populate semester + subject dropdowns ----------
+// ---------- Populate dropdowns ----------
 async function loadDataAndPopulate() {
   try {
     await fetchDataJson();
   } catch (err) {
-    toast(`Could not load data.json: ${err.message}`, "error");
+    toast(`Could not load data.json:\n${err.message}`, "error");
     return;
   }
+
   const semSel = $("semSelect");
   semSel.innerHTML = `<option value="">Choose semester…</option>`;
+
   state.dataJson.semesters
     .slice().sort((a, b) => a.id - b.id)
     .forEach(s => {
       const o = document.createElement("option");
       o.value = s.id;
-      o.textContent = `Semester ${s.id} — ${s.subjects.length} subjects`;
+      const count = (s.subjects || []).length;
+      o.textContent = `Semester ${s.id} — ${count} subjects`;
       semSel.appendChild(o);
     });
 }
@@ -494,6 +588,7 @@ $("semSelect").onchange = () => {
     subjSel.innerHTML = `<option value="">Choose semester first…</option>`;
     subjSel.disabled = true;
     newFields.classList.remove("active");
+    updateSubmitState();
     return;
   }
 
@@ -501,14 +596,14 @@ $("semSelect").onchange = () => {
   subjSel.disabled = false;
   subjSel.innerHTML = `<option value="">Choose subject…</option>`;
 
-  sem.subjects.forEach(sub => {
+  (sem.subjects || []).forEach(sub => {
     const o = document.createElement("option");
     o.value = sub.id;
-    o.textContent = `${sub.code || ""} — ${sub.name}`.replace(/^ — /, "");
+    const label = sub.code ? `${sub.code} — ${sub.name}` : sub.name;
+    o.textContent = label;
     subjSel.appendChild(o);
   });
 
-  // Add "new subject" option
   const o = document.createElement("option");
   o.value = "__new__";
   o.textContent = "➕ Add new subject…";
@@ -538,7 +633,6 @@ document.querySelectorAll('input[name="type"]').forEach(r => {
     $("fieldYear").classList.toggle("active", type === "papers");
     $("fieldTitle").classList.toggle("active", type === "notes");
     $("fieldSyllabusWarn").classList.toggle("active", type === "syllabus");
-    // Clear irrelevant fields so they don't submit stale values
     if (type !== "papers") $("yearInput").value = "";
     if (type !== "notes") $("titleInput").value = "";
     updateSubmitState();
@@ -591,7 +685,7 @@ function updateSubmitState() {
   const subjVal = $("subjSelect").value;
   let subjOk = false;
   if (subjVal === "__new__") {
-    subjOk = $("newSubjName").value.trim() && $("newSubjCode").value.trim();
+    subjOk = !!($("newSubjName").value.trim() && $("newSubjCode").value.trim());
   } else if (subjVal) {
     subjOk = true;
   }
@@ -601,8 +695,7 @@ function updateSubmitState() {
   else if (type === "notes") typeOk = !!$("titleInput").value.trim();
   else if (type === "syllabus") typeOk = true;
 
-  const fileOk = !!state.selectedFile;
-  btn.disabled = !(semOk && subjOk && typeOk && fileOk);
+  btn.disabled = !(semOk && subjOk && typeOk && !!state.selectedFile);
 }
 
 ["yearInput", "titleInput", "newSubjName", "newSubjCode"].forEach(id => {
@@ -615,6 +708,7 @@ $("uploadForm").onsubmit = async (e) => {
   const btn = $("submitBtn");
   btn.disabled = true;
   btn.textContent = "Uploading…";
+  $("result").classList.remove("active");
 
   try {
     const semId = +$("semSelect").value;
@@ -622,10 +716,7 @@ $("uploadForm").onsubmit = async (e) => {
     const type = document.querySelector('input[name="type"]:checked').value;
     const file = state.selectedFile;
 
-    // 1. Determine subject ID (new or existing)
-    let subjectId;
-    let isNewSubject = false;
-    let newSubjectData = null;
+    let subjectId, isNewSubject = false, newSubjectData = null;
 
     if (subjVal === "__new__") {
       isNewSubject = true;
@@ -644,7 +735,6 @@ $("uploadForm").onsubmit = async (e) => {
       subjectId = subjVal;
     }
 
-    // 2. Build filename
     let filename;
     if (type === "papers") {
       filename = `${$("yearInput").value}.pdf`;
@@ -652,39 +742,34 @@ $("uploadForm").onsubmit = async (e) => {
       filename = `syllabus.pdf`;
     } else {
       const base = file.name.replace(/\.pdf$/i, "");
-      filename = `${slugify(base) || "notes"}.pdf`;
+      const slug = slugify(base) || "notes";
+      const ts = Math.floor(Date.now() / 1000).toString(36).slice(-4);
+      filename = `${slug}-${ts}.pdf`;
     }
     const pdfPath = `pdfs/sem${semId}/${subjectId}/${filename}`;
 
-    // 3. Upload PDF to GitHub
-    toast("Uploading PDF…");
+    toast("Uploading PDF…", "info");
     const pdfB64 = await fileToBase64(file);
     await putFile(pdfPath, pdfB64, `Add ${filename} to ${subjectId}`);
 
-    // 4. Update data.json
-    toast("Updating manifest…");
+    toast("Updating manifest…", "info");
+    await fetchDataJson(); // fresh sha
 
-    // Re-fetch data.json to get fresh sha (another upload may have changed it)
-    await fetchDataJson();
     const data = state.dataJson;
-
     const sem = data.semesters.find(s => s.id === semId);
-    if (!sem) throw new Error(`Semester ${semId} not found in data.json`);
+    if (!sem) throw new Error(`Semester ${semId} missing in data.json`);
 
-    if (isNewSubject) {
-      sem.subjects.push(newSubjectData);
-    }
+    if (isNewSubject) sem.subjects.push(newSubjectData);
 
     const subj = sem.subjects.find(s => s.id === subjectId);
-    if (!subj) throw new Error(`Subject ${subjectId} not found`);
+    if (!subj) throw new Error(`Subject ${subjectId} missing in data.json`);
 
     const sizeMB = +(file.size / (1024 * 1024)).toFixed(1);
 
     if (type === "papers") {
-      subj.papers = subj.papers || [];
-      // Remove any existing entry with the same year, then add
-      subj.papers = subj.papers.filter(p => p.year !== +$("yearInput").value);
-      subj.papers.push({ year: +$("yearInput").value, file: pdfPath, sizeMB });
+      const year = +$("yearInput").value;
+      subj.papers = (subj.papers || []).filter(p => p.year !== year);
+      subj.papers.push({ year, file: pdfPath, sizeMB });
       subj.papers.sort((a, b) => b.year - a.year);
     } else if (type === "notes") {
       subj.notes = subj.notes || [];
@@ -695,7 +780,6 @@ $("uploadForm").onsubmit = async (e) => {
 
     await putDataJson(data, `Update manifest: ${filename}`);
 
-    // 5. Success UI
     const viewUrl = `subject.html?sem=${semId}&sub=${subjectId}#${type === "papers" ? "papers" : type === "notes" ? "notes" : "syllabus"}`;
     $("resultLinks").innerHTML = `
       <a href="${viewUrl}" target="_blank">View on site →</a>
@@ -704,15 +788,14 @@ $("uploadForm").onsubmit = async (e) => {
     $("result").classList.add("active");
     toast("✅ Uploaded successfully", "ok");
 
-    // Reset form but keep semester/subject
     state.selectedFile = null;
     fileInput.value = "";
     fileInfo.className = "file-info";
     fileInfo.textContent = "";
     $("titleInput").value = "";
     $("yearInput").value = "";
+
     if (!isNewSubject) {
-      // Reload subject list in case a new subject was just added
       await loadDataAndPopulate();
       $("semSelect").value = semId;
       $("semSelect").dispatchEvent(new Event("change"));
@@ -724,7 +807,7 @@ $("uploadForm").onsubmit = async (e) => {
     updateSubmitState();
 
   } catch (err) {
-    console.error(err);
+    console.error("[UPLOAD FAIL]", err);
     toast(`❌ ${err.message}`, "error");
     btn.textContent = "Upload & Publish";
     btn.disabled = false;
@@ -735,7 +818,7 @@ function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result.split(",")[1]);
-    reader.onerror = reject;
+    reader.onerror = () => reject(new Error("Could not read file"));
     reader.readAsDataURL(file);
   });
 }
