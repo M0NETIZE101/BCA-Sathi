@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semester — BCA Sathi</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="semester">
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">BCA <span>Sathi</span></a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <div class="dropdown">
+          <button class="dropbtn">Semesters ▾</button>
+          <div class="dropdown-content" id="semesterDropdown"></div>
+        </div>
+        <a href="index.html#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="breadcrumb"><a href="index.html">Home</a> / <span id="bcSem">Semester</span></p>
+    <h1 id="semTitle">Semester</h1>
+    <div class="grid-subjects" id="subjectGrid"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 BCA Sathi · Free TU BCA resources.</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
