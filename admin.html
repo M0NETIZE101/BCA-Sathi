@@ -2,198 +2,746 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — BCA Sathi</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    body { background: #fff; }
-    .admin-box { max-width: 560px; margin: 40px auto; padding: 24px; }
-    .admin-box h1 { margin-bottom: 20px; }
-    .admin-box label { display: block; margin-bottom: 14px; font-weight: 600; font-size: 0.9rem; }
-    .admin-box input, .admin-box select {
-      display: block; width: 100%; padding: 10px;
-      border: 1px solid #ddd; border-radius: 8px; margin-top: 4px; font-family: inherit;
+    :root {
+      --gold: #C9A227; --gold-soft: #F5E9C2;
+      --blue: #1E5AA8; --blue-dark: #164078;
+      --red: #c0392b; --red-soft: #fdecea;
+      --green: #2e7d32; --green-soft: #e8f5e9;
+      --border: #E8E4D6; --text: #1A2B4C; --muted: #5A6B85;
     }
-    .admin-box button { margin-top: 10px; }
-    #status { margin-top: 16px; padding: 12px; border-radius: 8px; font-size: 0.9rem; }
-    .info { background: #f5f9ff; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; color: #444; }
-    .warn { background: #fff8e1; border-left: 3px solid #c9a227; padding: 10px; border-radius: 4px; font-size: 0.82rem; margin-top: 16px; }
+    * { box-sizing: border-box; }
+    body { background: #fffdf6; }
+    .admin-wrap { max-width: 680px; margin: 0 auto; padding: 24px 16px 80px; }
+
+    /* ---- Connection bar ---- */
+    .conn-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      background: #fff; border: 1px solid var(--border); border-radius: 10px;
+      padding: 12px 16px; margin-bottom: 20px; font-size: 0.85rem;
+    }
+    .conn-bar.ok { border-color: #c8e6c9; background: var(--green-soft); }
+    .conn-bar.warn { border-color: #ffe082; background: var(--gold-soft); }
+    .conn-info { display: flex; align-items: center; gap: 8px; }
+    .conn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+    .conn-bar.ok .conn-dot { background: var(--green); }
+    .conn-bar.warn .conn-dot { background: var(--gold); }
+    .btn-link {
+      background: none; border: none; color: var(--blue); font-size: 0.82rem;
+      cursor: pointer; font-family: inherit; text-decoration: underline; padding: 0;
+    }
+
+    /* ---- Cards ---- */
+    .card {
+      background: #fff; border: 1px solid var(--border); border-radius: 12px;
+      padding: 20px; margin-bottom: 16px;
+    }
+    .card h2 {
+      font-size: 1rem; font-weight: 700; margin: 0 0 14px;
+      color: var(--text); display: flex; align-items: center; gap: 8px;
+    }
+    .card h2 .step {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--gold-soft); color: #7a6118;
+      font-size: 0.72rem; font-weight: 700;
+    }
+
+    /* ---- Fields ---- */
+    .field { margin-bottom: 14px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      display: block; font-size: 0.83rem; font-weight: 600;
+      margin-bottom: 6px; color: var(--text);
+    }
+    .field label .req { color: var(--red); }
+    .field input[type="text"],
+    .field input[type="password"],
+    .field input[type="number"],
+    .field select {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+      border-radius: 8px; font-family: inherit; font-size: 0.92rem;
+      color: var(--text); background: #fff; transition: border-color 0.15s;
+    }
+    .field input:focus, .field select:focus {
+      outline: none; border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(30, 90, 168, 0.12);
+    }
+    .field .hint { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    /* ---- Type cards ---- */
+    .type-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; margin-bottom: 16px;
+    }
+    .type-cards input { position: absolute; opacity: 0; pointer-events: none; }
+    .type-card-inner {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 3px; padding: 14px 8px; border: 2px solid var(--border);
+      border-radius: 10px; cursor: pointer; background: #fff;
+      transition: all 0.15s ease; text-align: center;
+    }
+    .type-card-inner:hover { border-color: var(--gold); }
+    .type-cards input:checked + .type-card-inner {
+      border-color: var(--gold); background: var(--gold-soft);
+    }
+    .type-icon { font-size: 1.4rem; line-height: 1; }
+    .type-label { font-size: 0.83rem; font-weight: 700; color: var(--text); }
+    .type-hint { font-size: 0.7rem; color: var(--muted); }
+
+    /* ---- Conditional fields ---- */
+    .conditional { display: none; }
+    .conditional.active { display: block; }
+
+    /* ---- Drop zone ---- */
+    .dropzone {
+      border: 2px dashed var(--border); border-radius: 10px;
+      padding: 24px; text-align: center; cursor: pointer;
+      background: #fffdf6; transition: all 0.15s;
+    }
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--gold); background: var(--gold-soft);
+    }
+    .dropzone input[type="file"] { display: none; }
+    .dropzone-icon { font-size: 1.8rem; margin-bottom: 6px; }
+    .dropzone-text { font-size: 0.88rem; color: var(--text); font-weight: 600; }
+    .dropzone-hint { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+    .file-info {
+      display: none; margin-top: 12px; padding: 10px 12px;
+      background: #f5f9ff; border: 1px solid #cfe0f5;
+      border-radius: 8px; font-size: 0.85rem;
+    }
+    .file-info.active { display: block; }
+    .file-info strong { color: var(--text); }
+    .file-info.error { background: var(--red-soft); border-color: #f5b7b1; color: var(--red); }
+
+    /* ---- Submit ---- */
+    .submit-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-top: 20px;
+    }
+    .btn-upload {
+      flex: 1; padding: 14px 20px; font-size: 0.95rem;
+    }
+    .btn-upload:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: var(--text); color: #fff; padding: 12px 20px;
+      border-radius: 10px; font-size: 0.88rem; box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+      display: none; max-width: 90vw; z-index: 1000;
+    }
+    .toast.active { display: block; }
+    .toast.ok { background: var(--green); }
+    .toast.error { background: var(--red); }
+
+    /* ---- Result panel ---- */
+    .result {
+      display: none; background: var(--green-soft); border: 1px solid #c8e6c9;
+      border-radius: 10px; padding: 16px; margin-top: 16px;
+    }
+    .result.active { display: block; }
+    .result h3 { margin: 0 0 8px; font-size: 0.95rem; color: var(--green); }
+    .result-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+    .result-links a {
+      font-size: 0.82rem; padding: 6px 12px; border-radius: 6px;
+      background: #fff; border: 1px solid #c8e6c9; color: var(--blue);
+      text-decoration: none; font-weight: 600;
+    }
+    .result-links a:hover { background: var(--green-soft); }
+
+    @media (max-width: 520px) {
+      .type-cards { grid-template-columns: 1fr; }
+      .type-card-inner { flex-direction: row; padding: 12px; gap: 10px; }
+    }
   </style>
 </head>
-<body>
-  <div class="admin-box">
-    <h1>Upload Resource</h1>
+<body data-page="admin">
 
-    <div id="tokenSection">
-      <div class="info">
-        Paste a GitHub <strong>Personal Access Token</strong> (create one at github.com/settings/tokens). It's stored in this browser only.
-      </div>
-      <label>GitHub Token
-        <input id="patInput" type="password" placeholder="ghp_...">
-      </label>
-      <label>Repo (owner/repo)
-        <input id="repoInput" type="text" placeholder="yourname/bca-sathi">
-      </label>
-      <button class="btn btn-primary" id="saveToken">Save & Continue</button>
+<main class="admin-wrap">
+  <h1 style="font-size:1.5rem;font-weight:800;margin-bottom:4px;">Upload Resource</h1>
+  <p class="muted" style="font-size:0.88rem;margin-bottom:20px;">
+    Add notes, past papers, or syllabus to BCA Sathi.
+  </p>
+
+  <!-- Connection bar -->
+  <div class="conn-bar warn" id="connBar">
+    <div class="conn-info">
+      <span class="conn-dot"></span>
+      <span id="connText">Not connected</span>
     </div>
-
-    <form id="uploadForm" style="display:none;">
-      <label>Semester
-        <select name="semester" required>
-          <option value="1">Semester 1</option><option value="2">Semester 2</option>
-          <option value="3">Semester 3</option><option value="4">Semester 4</option>
-          <option value="5">Semester 5</option><option value="6">Semester 6</option>
-          <option value="7">Semester 7</option><option value="8">Semester 8</option>
-        </select>
-      </label>
-      <label>Subject ID <input name="subjectId" required placeholder="e.g. cacs101-cf"></label>
-      <label>Type
-        <select name="type" required>
-          <option value="notes">Notes</option>
-          <option value="papers">Past Paper</option>
-          <option value="syllabus">Syllabus</option>
-        </select>
-      </label>
-      <label>Title (for notes only) <input name="title" placeholder="e.g. Unit 1 Notes"></label>
-      <label>Year (for papers only) <input name="year" type="number" min="2000" max="2100"></label>
-      <label>PDF File <input name="file" type="file" accept="application/pdf" required></label>
-      <button class="btn btn-primary" type="submit">Upload & Update Site</button>
-      <div class="warn">
-        ⚠️ GitHub's API is reliable up to <strong>~10 MB per file</strong>. For larger PDFs, use GitHub's web uploader instead.
-      </div>
-    </form>
-
-    <p id="status"></p>
+    <button class="btn-link" id="changeConn">Setup</button>
   </div>
 
-  <script>
-    const $ = id => document.getElementById(id);
-    const setStatus = (msg, ok) => {
-      $("status").textContent = msg;
-      $("status").style.background = ok ? "#e8f5e9" : "#ffebee";
-      $("status").style.color = ok ? "#1b5e20" : "#b71c1c";
-    };
+  <!-- Connection setup -->
+  <div class="card" id="setupCard" style="display:none;">
+    <h2>🔑 GitHub Connection</h2>
+    <div class="field">
+      <label>GitHub Token <span class="req">*</span></label>
+      <input id="patInput" type="password" placeholder="ghp_...">
+      <p class="hint">Create at github.com/settings/tokens with <strong>repo</strong> scope. Stored in this browser only.</p>
+    </div>
+    <div class="field">
+      <label>Repository <span class="req">*</span></label>
+      <input id="repoInput" type="text" placeholder="username/bca-sathi">
+    </div>
+    <button class="btn btn-primary" id="saveConn" style="width:100%;">Save & Connect</button>
+  </div>
 
-    let PAT = localStorage.getItem("gh_pat") || "";
-    let REPO = localStorage.getItem("gh_repo") || "";
+  <!-- Upload form -->
+  <form id="uploadForm" style="display:none;">
+    <!-- Step 1: Location -->
+    <div class="card">
+      <h2><span class="step">1</span> Where does it belong?</h2>
 
-    function showForm() {
-      $("tokenSection").style.display = "none";
-      $("uploadForm").style.display = "block";
+      <div class="field">
+        <label>Semester <span class="req">*</span></label>
+        <select id="semSelect" required>
+          <option value="">Choose semester…</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Subject <span class="req">*</span></label>
+        <select id="subjSelect" required disabled>
+          <option value="">Choose semester first…</option>
+        </select>
+        <p class="hint" id="subjHint"></p>
+      </div>
+
+      <!-- New subject fields -->
+      <div id="newSubjectFields" class="conditional">
+        <div class="field">
+          <label>New Subject Name <span class="req">*</span></label>
+          <input id="newSubjName" type="text" placeholder="e.g. Object Oriented Programming in C++">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="field">
+            <label>Code <span class="req">*</span></label>
+            <input id="newSubjCode" type="text" placeholder="BCA 107">
+          </div>
+          <div class="field">
+            <label>Credits</label>
+            <input id="newSubjCredits" type="number" min="1" max="6" placeholder="3">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Resource type -->
+    <div class="card">
+      <h2><span class="step">2</span> What are you uploading?</h2>
+
+      <div class="type-cards">
+        <label>
+          <input type="radio" name="type" value="papers">
+          <span class="type-card-inner">
+            <span class="type-icon">📝</span>
+            <span class="type-label">Past Paper</span>
+            <span class="type-hint">Year required</span>
+          </span>
+        </label>
+        <label>
+          <input type="radio" name="type" value="notes">
+          <span class="type-card-inner">
+            <span class="type-icon">📄</span>
+            <span class="type-label">Notes</span>
+            <span class="type-hint">Title required</span>
+          </span>
+        </label>
+        <label>
+          <input type="radio" name="type" value="syllabus">
+          <span class="type-card-inner">
+            <span class="type-icon">📚</span>
+            <span class="type-label">Syllabus</span>
+            <span class="type-hint">One per subject</span>
+          </span>
+        </label>
+      </div>
+
+      <!-- Conditional: Past paper -->
+      <div id="fieldYear" class="field conditional">
+        <label>Exam Year (B.S.) <span class="req">*</span></label>
+        <input id="yearInput" type="number" min="2070" max="2100" placeholder="e.g. 2082">
+        <p class="hint">The year the exam was held (Nepali calendar).</p>
+      </div>
+
+      <!-- Conditional: Notes -->
+      <div id="fieldTitle" class="field conditional">
+        <label>Note Title <span class="req">*</span></label>
+        <input id="titleInput" type="text" placeholder="e.g. Unit 1: Introduction to Computers">
+      </div>
+
+      <!-- Conditional: Syllabus warning -->
+      <div id="fieldSyllabusWarn" class="conditional">
+        <p class="hint" style="padding:10px;background:#fff8e1;border-left:3px solid var(--gold);border-radius:4px;">
+          ⚠️ Replacing an existing syllabus for this subject will overwrite it.
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 3: File -->
+    <div class="card">
+      <h2><span class="step">3</span> Select the PDF</h2>
+
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept="application/pdf">
+        <div class="dropzone-icon">📄</div>
+        <div class="dropzone-text">Click to choose a PDF, or drag it here</div>
+        <div class="dropzone-hint">Max 20 MB · PDF only</div>
+      </div>
+
+      <div class="file-info" id="fileInfo"></div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-row">
+      <button type="submit" class="btn btn-primary btn-upload" id="submitBtn" disabled>
+        Upload & Publish
+      </button>
+    </div>
+
+    <!-- Result -->
+    <div class="result" id="result">
+      <h3>✅ Uploaded successfully</h3>
+      <p class="muted" style="font-size:0.83rem;margin:0;">
+        Cloudflare Pages will redeploy in about 1 minute.
+      </p>
+      <div class="result-links" id="resultLinks"></div>
+    </div>
+  </form>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// BCA Sathi — Admin Panel
+// ============================================================
+const $ = id => document.getElementById(id);
+const state = {
+  pat: localStorage.getItem("gh_pat") || "",
+  repo: localStorage.getItem("gh_repo") || "",
+  dataJson: null,       // cached parsed data.json
+  dataSha: null,        // sha of data.json (for updates)
+  selectedFile: null,
+};
+
+// ---------- Toast ----------
+let toastTimer;
+function toast(msg, type = "ok") {
+  const t = $("toast");
+  t.textContent = msg;
+  t.className = `toast active ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.className = "toast", 4000);
+}
+
+// ---------- Base64 helpers (UTF-8 safe) ----------
+function b64DecodeUnicode(str) {
+  const clean = String(str).replace(/\s/g, "");
+  const bytes = Uint8Array.from(atob(clean), c => c.charCodeAt(0));
+  return new TextDecoder("utf-8").decode(bytes);
+}
+function b64EncodeUnicode(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
+}
+
+// ---------- GitHub API ----------
+async function gh(path, opts = {}) {
+  const res = await fetch(`https://api.github.com/repos/${state.repo}/${path}`, {
+    ...opts,
+    headers: {
+      "Authorization": `Bearer ${state.pat}`,
+      "Accept": "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      ...(opts.headers || {}),
+    },
+  });
+  return res;
+}
+
+async function fetchDataJson() {
+  const res = await gh(`contents/data.json`);
+  if (!res.ok) throw new Error(`Could not read data.json (${res.status})`);
+  const json = await res.json();
+  const text = b64DecodeUnicode(json.content);
+  state.dataJson = JSON.parse(text);
+  state.dataSha = json.sha;
+  return state.dataJson;
+}
+
+async function putFile(path, base64Content, message) {
+  // Get existing sha if any
+  let sha = null;
+  const check = await gh(`contents/${path}`);
+  if (check.ok) {
+    const existing = await check.json();
+    sha = existing.sha;
+  }
+  const body = { message, content: base64Content, branch: "main" };
+  if (sha) body.sha = sha;
+  const res = await gh(`contents/${path}`, { method: "PUT", body: JSON.stringify(body) });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`GitHub ${res.status}: ${err.slice(0, 200)}`);
+  }
+  return res.json();
+}
+
+async function putDataJson(obj, message) {
+  const content = b64EncodeUnicode(JSON.stringify(obj, null, 2));
+  const body = { message, content, branch: "main", sha: state.dataSha };
+  const res = await gh(`contents/data.json`, { method: "PUT", body: JSON.stringify(body) });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Failed to update data.json (${res.status}): ${err.slice(0, 200)}`);
+  }
+  return res.json();
+}
+
+// ---------- Connection ----------
+function refreshConnUI() {
+  const bar = $("connBar");
+  const text = $("connText");
+  if (state.pat && state.repo) {
+    bar.className = "conn-bar ok";
+    text.textContent = `Connected to ${state.repo}`;
+    $("setupCard").style.display = "none";
+    $("uploadForm").style.display = "block";
+    $("changeConn").textContent = "Change";
+    loadDataAndPopulate();
+  } else {
+    bar.className = "conn-bar warn";
+    text.textContent = "Not connected to GitHub";
+    $("setupCard").style.display = "block";
+    $("uploadForm").style.display = "none";
+    $("changeConn").textContent = "Setup";
+  }
+}
+
+$("changeConn").onclick = () => {
+  $("setupCard").style.display = "block";
+  $("patInput").value = "";
+  $("repoInput").value = state.repo;
+  $("patInput").focus();
+};
+
+$("saveConn").onclick = async () => {
+  const pat = $("patInput").value.trim();
+  const repo = $("repoInput").value.trim();
+  if (!pat || !pat.startsWith("ghp_") && !pat.startsWith("github_pat_")) {
+    return toast("Enter a valid GitHub token", "error");
+  }
+  if (!repo || !repo.includes("/")) {
+    return toast("Repo must be owner/repo format", "error");
+  }
+  state.pat = pat;
+  state.repo = repo;
+  localStorage.setItem("gh_pat", pat);
+  localStorage.setItem("gh_repo", repo);
+  try {
+    await fetchDataJson();
+    refreshConnUI();
+    toast("Connected successfully", "ok");
+  } catch (err) {
+    toast(`Connection failed: ${err.message}`, "error");
+    state.pat = ""; state.repo = "";
+    localStorage.removeItem("gh_pat");
+    localStorage.removeItem("gh_repo");
+  }
+};
+
+// ---------- Populate semester + subject dropdowns ----------
+async function loadDataAndPopulate() {
+  try {
+    await fetchDataJson();
+  } catch (err) {
+    toast(`Could not load data.json: ${err.message}`, "error");
+    return;
+  }
+  const semSel = $("semSelect");
+  semSel.innerHTML = `<option value="">Choose semester…</option>`;
+  state.dataJson.semesters
+    .slice().sort((a, b) => a.id - b.id)
+    .forEach(s => {
+      const o = document.createElement("option");
+      o.value = s.id;
+      o.textContent = `Semester ${s.id} — ${s.subjects.length} subjects`;
+      semSel.appendChild(o);
+    });
+}
+
+function slugify(str) {
+  return String(str).toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+$("semSelect").onchange = () => {
+  const semId = +$("semSelect").value;
+  const subjSel = $("subjSelect");
+  const newFields = $("newSubjectFields");
+
+  if (!semId) {
+    subjSel.innerHTML = `<option value="">Choose semester first…</option>`;
+    subjSel.disabled = true;
+    newFields.classList.remove("active");
+    return;
+  }
+
+  const sem = state.dataJson.semesters.find(s => s.id === semId);
+  subjSel.disabled = false;
+  subjSel.innerHTML = `<option value="">Choose subject…</option>`;
+
+  sem.subjects.forEach(sub => {
+    const o = document.createElement("option");
+    o.value = sub.id;
+    o.textContent = `${sub.code || ""} — ${sub.name}`.replace(/^ — /, "");
+    subjSel.appendChild(o);
+  });
+
+  // Add "new subject" option
+  const o = document.createElement("option");
+  o.value = "__new__";
+  o.textContent = "➕ Add new subject…";
+  subjSel.appendChild(o);
+
+  newFields.classList.remove("active");
+  updateSubmitState();
+};
+
+$("subjSelect").onchange = () => {
+  const val = $("subjSelect").value;
+  const newFields = $("newSubjectFields");
+  if (val === "__new__") {
+    newFields.classList.add("active");
+    $("subjHint").textContent = "Fill in the new subject details below.";
+  } else {
+    newFields.classList.remove("active");
+    $("subjHint").textContent = "";
+  }
+  updateSubmitState();
+};
+
+// ---------- Type selection ----------
+document.querySelectorAll('input[name="type"]').forEach(r => {
+  r.onchange = () => {
+    const type = r.value;
+    $("fieldYear").classList.toggle("active", type === "papers");
+    $("fieldTitle").classList.toggle("active", type === "notes");
+    $("fieldSyllabusWarn").classList.toggle("active", type === "syllabus");
+    // Clear irrelevant fields so they don't submit stale values
+    if (type !== "papers") $("yearInput").value = "";
+    if (type !== "notes") $("titleInput").value = "";
+    updateSubmitState();
+  };
+});
+
+// ---------- File selection ----------
+const dropzone = $("dropzone");
+const fileInput = $("fileInput");
+const fileInfo = $("fileInfo");
+
+dropzone.onclick = () => fileInput.click();
+dropzone.ondragover = (e) => { e.preventDefault(); dropzone.classList.add("dragover"); };
+dropzone.ondragleave = () => dropzone.classList.remove("dragover");
+dropzone.ondrop = (e) => {
+  e.preventDefault();
+  dropzone.classList.remove("dragover");
+  if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+};
+fileInput.onchange = () => {
+  if (fileInput.files.length) handleFile(fileInput.files[0]);
+};
+
+function handleFile(file) {
+  fileInfo.className = "file-info";
+  if (file.type !== "application/pdf") {
+    fileInfo.classList.add("active", "error");
+    fileInfo.textContent = "❌ Not a PDF file. Please choose a .pdf file.";
+    state.selectedFile = null;
+    updateSubmitState();
+    return;
+  }
+  if (file.size > 20 * 1024 * 1024) {
+    fileInfo.classList.add("active", "error");
+    fileInfo.textContent = `❌ File too large (${(file.size/1024/1024).toFixed(1)} MB). Max is 20 MB.`;
+    state.selectedFile = null;
+    updateSubmitState();
+    return;
+  }
+  state.selectedFile = file;
+  fileInfo.classList.add("active");
+  fileInfo.innerHTML = `<strong>${file.name}</strong> · ${(file.size/1024/1024).toFixed(2)} MB — ready`;
+  updateSubmitState();
+}
+
+// ---------- Submit state ----------
+function updateSubmitState() {
+  const btn = $("submitBtn");
+  const semOk = !!$("semSelect").value;
+  const subjVal = $("subjSelect").value;
+  let subjOk = false;
+  if (subjVal === "__new__") {
+    subjOk = $("newSubjName").value.trim() && $("newSubjCode").value.trim();
+  } else if (subjVal) {
+    subjOk = true;
+  }
+  const type = document.querySelector('input[name="type"]:checked')?.value;
+  let typeOk = false;
+  if (type === "papers") typeOk = !!$("yearInput").value;
+  else if (type === "notes") typeOk = !!$("titleInput").value.trim();
+  else if (type === "syllabus") typeOk = true;
+
+  const fileOk = !!state.selectedFile;
+  btn.disabled = !(semOk && subjOk && typeOk && fileOk);
+}
+
+["yearInput", "titleInput", "newSubjName", "newSubjCode"].forEach(id => {
+  $(id).addEventListener("input", updateSubmitState);
+});
+
+// ---------- Upload ----------
+$("uploadForm").onsubmit = async (e) => {
+  e.preventDefault();
+  const btn = $("submitBtn");
+  btn.disabled = true;
+  btn.textContent = "Uploading…";
+
+  try {
+    const semId = +$("semSelect").value;
+    const subjVal = $("subjSelect").value;
+    const type = document.querySelector('input[name="type"]:checked').value;
+    const file = state.selectedFile;
+
+    // 1. Determine subject ID (new or existing)
+    let subjectId;
+    let isNewSubject = false;
+    let newSubjectData = null;
+
+    if (subjVal === "__new__") {
+      isNewSubject = true;
+      const code = $("newSubjCode").value.trim();
+      subjectId = slugify(code);
+      newSubjectData = {
+        id: subjectId,
+        name: $("newSubjName").value.trim(),
+        code,
+        credits: +($("newSubjCredits").value || 3),
+        syllabus: null,
+        notes: [],
+        papers: [],
+      };
+    } else {
+      subjectId = subjVal;
     }
 
-    if (PAT && REPO) showForm();
+    // 2. Build filename
+    let filename;
+    if (type === "papers") {
+      filename = `${$("yearInput").value}.pdf`;
+    } else if (type === "syllabus") {
+      filename = `syllabus.pdf`;
+    } else {
+      const base = file.name.replace(/\.pdf$/i, "");
+      filename = `${slugify(base) || "notes"}.pdf`;
+    }
+    const pdfPath = `pdfs/sem${semId}/${subjectId}/${filename}`;
 
-    $("saveToken").onclick = () => {
-      const p = $("patInput").value.trim();
-      const r = $("repoInput").value.trim();
-      if (!p || !r.includes("/")) return setStatus("Enter a valid token and owner/repo.", false);
-      PAT = p; REPO = r;
-      localStorage.setItem("gh_pat", p);
-      localStorage.setItem("gh_repo", r);
-      showForm();
-    };
+    // 3. Upload PDF to GitHub
+    toast("Uploading PDF…");
+    const pdfB64 = await fileToBase64(file);
+    await putFile(pdfPath, pdfB64, `Add ${filename} to ${subjectId}`);
 
-    async function gh(path, opts = {}) {
-      const res = await fetch(`https://api.github.com/repos/${REPO}/${path}`, {
-        ...opts,
-        headers: {
-          "Authorization": `Bearer ${PAT}`,
-          "Accept": "application/vnd.github+json",
-          "X-GitHub-Api-Version": "2022-11-28",
-          ...(opts.headers || {}),
-        },
-      });
-      return res;
+    // 4. Update data.json
+    toast("Updating manifest…");
+
+    // Re-fetch data.json to get fresh sha (another upload may have changed it)
+    await fetchDataJson();
+    const data = state.dataJson;
+
+    const sem = data.semesters.find(s => s.id === semId);
+    if (!sem) throw new Error(`Semester ${semId} not found in data.json`);
+
+    if (isNewSubject) {
+      sem.subjects.push(newSubjectData);
     }
 
-    async function getFileSha(path) {
-      const res = await gh(`contents/${path}`);
-      if (res.status === 404) return null;
-      const data = await res.json();
-      return data.sha;
+    const subj = sem.subjects.find(s => s.id === subjectId);
+    if (!subj) throw new Error(`Subject ${subjectId} not found`);
+
+    const sizeMB = +(file.size / (1024 * 1024)).toFixed(1);
+
+    if (type === "papers") {
+      subj.papers = subj.papers || [];
+      // Remove any existing entry with the same year, then add
+      subj.papers = subj.papers.filter(p => p.year !== +$("yearInput").value);
+      subj.papers.push({ year: +$("yearInput").value, file: pdfPath, sizeMB });
+      subj.papers.sort((a, b) => b.year - a.year);
+    } else if (type === "notes") {
+      subj.notes = subj.notes || [];
+      subj.notes.push({ title: $("titleInput").value.trim(), file: pdfPath, sizeMB });
+    } else {
+      subj.syllabus = { file: pdfPath, sizeMB };
     }
 
-    async function putFile(path, base64, message) {
-      const sha = await getFileSha(path);
-      const body = { message, content: base64, branch: "main" };
-      if (sha) body.sha = sha;
-      const res = await gh(`contents/${path}`, {
-        method: "PUT",
-        body: JSON.stringify(body),
-      });
-      if (!res.ok) throw new Error(`GitHub ${res.status}: ${await res.text()}`);
+    await putDataJson(data, `Update manifest: ${filename}`);
+
+    // 5. Success UI
+    const viewUrl = `subject.html?sem=${semId}&sub=${subjectId}#${type === "papers" ? "papers" : type === "notes" ? "notes" : "syllabus"}`;
+    $("resultLinks").innerHTML = `
+      <a href="${viewUrl}" target="_blank">View on site →</a>
+      <a href="https://github.com/${state.repo}/blob/main/${pdfPath}" target="_blank">View on GitHub</a>
+    `;
+    $("result").classList.add("active");
+    toast("✅ Uploaded successfully", "ok");
+
+    // Reset form but keep semester/subject
+    state.selectedFile = null;
+    fileInput.value = "";
+    fileInfo.className = "file-info";
+    fileInfo.textContent = "";
+    $("titleInput").value = "";
+    $("yearInput").value = "";
+    if (!isNewSubject) {
+      // Reload subject list in case a new subject was just added
+      await loadDataAndPopulate();
+      $("semSelect").value = semId;
+      $("semSelect").dispatchEvent(new Event("change"));
+      $("subjSelect").value = subjVal;
+      $("subjSelect").dispatchEvent(new Event("change"));
     }
 
-    function toBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(",")[1]);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
+    btn.textContent = "Upload & Publish";
+    updateSubmitState();
 
-    function safeName(name) {
-      return name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    }
+  } catch (err) {
+    console.error(err);
+    toast(`❌ ${err.message}`, "error");
+    btn.textContent = "Upload & Publish";
+    btn.disabled = false;
+  }
+};
 
-    $("uploadForm").onsubmit = async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const data = new FormData(form);
-      const file = data.get("file");
-      const semester = data.get("semester");
-      const subjectId = data.get("subjectId").trim();
-      const type = data.get("type");
-      const year = data.get("year");
-      const title = data.get("title").trim();
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(",")[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
-      if (!file || file.size === 0) return setStatus("Choose a PDF file.", false);
-      if (file.size > 20 * 1024 * 1024) return setStatus("File too large (max 20 MB).", false);
-      if (type === "papers" && !year) return setStatus("Year is required for papers.", false);
-
-      try {
-        setStatus("Uploading PDF…", true);
-
-        const filename = `${type === "papers" ? year : type === "syllabus" ? "syllabus" : safeName(file.name.replace(/\.pdf$/i, ""))}.pdf`;
-        const pdfPath = `pdfs/sem${semester}/${subjectId}/${filename}`;
-        const pdfB64 = await toBase64(file);
-        await putFile(pdfPath, pdfB64, `Add ${filename} to sem${semester}/${subjectId}`);
-
-        setStatus("Updating data.json…", true);
-
-        // Fetch current data.json
-        const res = await gh(`contents/data.json`);
-        if (!res.ok) throw new Error("Could not read data.json");
-        const dataFile = await res.json();
-        const current = JSON.parse(atob(dataFile.content));
-
-        // Find semester + subject, or create subject if missing
-        let sem = current.semesters.find(s => s.id === +semester);
-        if (!sem) { sem = { id: +semester, name: `Semester ${semester}`, tagline: "", subjects: [] }; current.semesters.push(sem); }
-
-        let subj = sem.subjects.find(s => s.id === subjectId);
-        if (!subj) {
-          subj = { id: subjectId, name: subjectId, code: "", syllabus: null, notes: [], papers: [] };
-          sem.subjects.push(subj);
-        }
-
-        const sizeMB = +(file.size / (1024 * 1024)).toFixed(1);
-        const entry = { file: pdfPath, sizeMB };
-
-        if (type === "papers") { entry.year = +year; subj.papers.push(entry); }
-        else if (type === "notes") { entry.title = title || file.name; subj.notes.push(entry); }
-        else { subj.syllabus = entry; }
-
-        const updatedB64 = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
-        await putFile("data.json", updatedB64, `Update manifest: ${pdfPath}`);
-
-        setStatus("✅ Done. Cloudflare Pages will redeploy in ~1 minute.", true);
-        form.reset();
-      } catch (err) {
-        setStatus(`❌ ${err.message}`, false);
-      }
-    };
-  </script>
+// ---------- Init ----------
+refreshConnUI();
+</script>
 </body>
 </html>
