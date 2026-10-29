@@ -1,0 +1,12 @@
+{
+  "code": "BCA 106",
+  "title": "Hardware Workshop",
+  "credits": 1,
+  "totalHours": 32,
+  "description": "Practical course. Hands-on work with computer hardware components, assembly, disassembly, and troubleshooting.",
+  "units": [
+    { "number": 1, "title": "Computer Hardware Identification", "hours": 8, "topics": ["Motherboard, CPU, RAM, storage, PSU identification", "Peripheral devices"] },
+    { "number": 2, "title": "Assembly and Disassembly", "hours": 12, "topics": ["Step-by-step PC assembly", "Safe disassembly procedures", "Cable management"] },
+    { "number": 3, "title": "Troubleshooting", "hours": 12, "topics": ["POST diagnostics", "Hardware vs software issues", "Basic repair and maintenance"] }
+  ]
+}

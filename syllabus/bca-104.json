@@ -1,0 +1,15 @@
+{
+  "code": "BCA 104",
+  "title": "Mathematics I",
+  "credits": 3,
+  "totalHours": 48,
+  "description": "Foundational mathematics for computing, covering real numbers, functions, sequences, matrices, analytical geometry, vector space, and permutations.",
+  "units": [
+    { "number": 1, "title": "Set Theory, Real & Complex Numbers", "hours": 8, "topics": ["Elementary logic", "Real number axioms", "Complex numbers, relations"] },
+    { "number": 2, "title": "Sequence and Series", "hours": 8, "topics": ["Arithmetic, geometric, harmonic progressions", "Properties of series"] },
+    { "number": 3, "title": "Matrices and Determinants", "hours": 8, "topics": ["Matrix algebra, determinants, rank", "Linear transformations", "Eigenvalues and eigenvectors"] },
+    { "number": 4, "title": "Conic Sections", "hours": 8, "topics": ["Standard equations and graphs of circles, parabolas, ellipses, hyperbolas"] },
+    { "number": 5, "title": "Vector Space", "hours": 8, "topics": ["Vector operations, scalar/vector products", "Linear dependence/independence, orthogonality"] },
+    { "number": 6, "title": "Permutations and Combinations", "hours": 8, "topics": ["Basic counting principles", "Relation and applications"] }
+  ]
+}

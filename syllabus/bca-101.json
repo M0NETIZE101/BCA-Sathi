@@ -1,0 +1,16 @@
+{
+  "code": "BCA 101",
+  "title": "Computer Fundamentals and Applications",
+  "credits": 3,
+  "totalHours": 48,
+  "description": "Covers basic computer fundamentals, software, hardware, operating systems, DBMS, networks, and recent trends. Aims to help students convert theoretical concepts into practical skills using application packages.",
+  "units": [
+    { "number": 1, "title": "Introduction to Computer System", "hours": 8, "topics": ["Definition, anatomy, types, history and generations of computers", "Applications of computers in various fields"] },
+    { "number": 2, "title": "Basic Computer Organization", "hours": 8, "topics": ["Components of CPU, memory hierarchy", "Motherboard, BIOS, SMPS, CMOS, microprocessors"] },
+    { "number": 3, "title": "Computer Software", "hours": 7, "topics": ["Types of software, operating system functions", "Utility software, programming language translators"] },
+    { "number": 4, "title": "Database Management System", "hours": 7, "topics": ["Introduction to data, database, DBMS architecture", "Models, SQL/NoSQL, data warehousing, data mining"] },
+    { "number": 5, "title": "Data Communication and Computer Network", "hours": 8, "topics": ["Network types, topologies, transmission media", "OSI model, protocols, World Wide Web"] },
+    { "number": 6, "title": "Computer Security", "hours": 5, "topics": ["Security threats, malicious software", "Cryptography, digital signatures, firewalls, security policies"] },
+    { "number": 7, "title": "Contemporary Technologies", "hours": 5, "topics": ["AI, machine learning, blockchain, IoT", "Cloud computing, AR/VR"] }
+  ]
+}

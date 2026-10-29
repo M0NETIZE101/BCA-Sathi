@@ -1,0 +1,14 @@
+{
+  "code": "BCA 103",
+  "title": "Digital Logic",
+  "credits": 3,
+  "totalHours": 48,
+  "description": "Fundamental concepts of digital logic systems, number systems, Boolean algebra, combinational and sequential logic design, and programmable logic devices.",
+  "units": [
+    { "number": 1, "title": "Number Systems", "hours": 8, "topics": ["Analog/digital signals", "Number system conversions", "Signed numbers, complements, binary arithmetic"] },
+    { "number": 2, "title": "Boolean Algebra & Logic Gates", "hours": 10, "topics": ["Basic and universal logic gates", "Boolean theorems", "Canonical forms (SOP, POS)", "Karnaugh Map simplification"] },
+    { "number": 3, "title": "Combinational Logic Design", "hours": 10, "topics": ["Adders, subtractors", "Encoders/decoders, multiplexers", "Magnitude comparators"] },
+    { "number": 4, "title": "Sequential Logic Design", "hours": 10, "topics": ["State diagrams", "Latches and flip-flops (RS, D, T, JK, master-slave)"] },
+    { "number": 5, "title": "Counters & Registers", "hours": 10, "topics": ["Asynchronous/synchronous counters", "Shift registers"] }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "code": "BCA 156",
+  "title": "Principles of Management",
+  "credits": 1,
+  "totalHours": 16,
+  "description": "Introduction to management concepts, planning, organizing, and decision-making.",
+  "units": [
+    { "number": 1, "title": "Introduction to Management", "hours": 6, "topics": ["Concept, forms of business", "Management process", "Types of managers, managerial skills"] },
+    { "number": 2, "title": "Planning and Decision Making", "hours": 5, "topics": ["Planning process", "Types of plans", "Decision-making models"] },
+    { "number": 3, "title": "Organizing", "hours": 5, "topics": ["Organizational structure", "Authority", "Delegation"] }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "code": "BCA 102",
+  "title": "Programming in C",
+  "credits": 3,
+  "totalHours": 48,
+  "description": "Comprehensive introduction to structured and procedural programming using C, covering variables, data types, control structures, arrays, functions, pointers, and file handling.",
+  "units": [
+    { "number": 1, "title": "Introduction", "hours": 8, "topics": ["Evolution of programming languages", "History and characteristics of C", "Structure of a C program, compilation process", "Tokens, variables, data types, operators"] },
+    { "number": 2, "title": "Input/Output & Control Structures", "hours": 10, "topics": ["Standard I/O functions (printf, scanf)", "Decision-making: if, if-else, switch", "Looping: while, do-while, for"] },
+    { "number": 3, "title": "Arrays and Strings", "hours": 8, "topics": ["One-dimensional and multi-dimensional arrays", "String handling functions"] },
+    { "number": 4, "title": "Functions", "hours": 8, "topics": ["Function definition, declaration, calling", "Recursion, scope and storage classes"] },
+    { "number": 5, "title": "Pointers", "hours": 8, "topics": ["Pointer declaration, arithmetic", "Pointers and arrays, pointers and functions"] },
+    { "number": 6, "title": "File Handling", "hours": 6, "topics": ["File open/close/read/write", "Sequential and random access files"] }
+  ]
+}

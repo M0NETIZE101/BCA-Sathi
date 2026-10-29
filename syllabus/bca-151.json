@@ -1,0 +1,15 @@
+{
+  "code": "BCA 151",
+  "title": "Discrete Structure",
+  "credits": 3,
+  "totalHours": 48,
+  "description": "Covers sets, logic, graph theory, combinatorics, and algebraic structures for computer science.",
+  "units": [
+    { "number": 1, "title": "Set Theory", "hours": 8, "topics": ["Basic concepts of sets", "Set operations", "Venn diagrams and relationships"] },
+    { "number": 2, "title": "Logic and Propositional Calculus", "hours": 8, "topics": ["Propositional logic", "Truth tables", "Logical equivalences"] },
+    { "number": 3, "title": "Relations and Functions", "hours": 8, "topics": ["Properties of relations", "Equivalence relations", "Functions and their types"] },
+    { "number": 4, "title": "Mathematical Reasoning and Proof Techniques", "hours": 8, "topics": ["Methods of proof", "Mathematical induction", "Recursion"] },
+    { "number": 5, "title": "Combinatorics and Counting Principles", "hours": 8, "topics": ["Permutations and combinations", "Pigeonhole principle"] },
+    { "number": 6, "title": "Graph Theory and Trees", "hours": 8, "topics": ["Graphs and their representations", "Trees and spanning trees", "Graph algorithms"] }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "code": "BCA 154",
+  "title": "Mathematics II",
+  "credits": 3,
+  "totalHours": 48,
+  "description": "Covers limits, continuity, derivatives, integration, differential equations, and computational methods.",
+  "units": [
+    { "number": 1, "title": "Limit and Continuity", "hours": 8, "topics": ["Definition of limits", "Algebraic properties", "Continuity and types of discontinuity"] },
+    { "number": 2, "title": "Derivatives", "hours": 8, "topics": ["Differentiation of algebraic, trigonometric, exponential, logarithmic functions", "Rules of differentiation"] },
+    { "number": 3, "title": "Applications of Derivatives", "hours": 8, "topics": ["Maxima and minima", "Curve sketching", "Optimization"] },
+    { "number": 4, "title": "Anti-derivative and its Applications", "hours": 8, "topics": ["Indefinite and definite integrals", "Area under curves"] },
+    { "number": 5, "title": "Differential Equations", "hours": 8, "topics": ["First-order differential equations", "Applications"] },
+    { "number": 6, "title": "Computational Methods", "hours": 8, "topics": ["Numerical solutions of equations", "Interpolation", "Numerical integration"] }
+  ]
+}

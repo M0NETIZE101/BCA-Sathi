@@ -1,0 +1,15 @@
+{
+  "code": "BCA 105",
+  "title": "Professional Communication and Ethics",
+  "credits": 3,
+  "totalHours": 48,
+  "description": "Develops professional communication competencies and ethical understanding, emphasizing strategies, formats, and tools used in professional settings.",
+  "units": [
+    { "number": 1, "title": "Foundation of Professional Communication", "hours": 8, "topics": ["Communication process, barriers", "Nonverbal communication", "Grammar: tenses, confusing words"] },
+    { "number": 2, "title": "Oral Communication", "hours": 8, "topics": ["Telephone etiquette, public speaking", "Meetings, interviews", "Professional idioms"] },
+    { "number": 3, "title": "Writing Professionally", "hours": 8, "topics": ["Rules of professional writing", "Emails, memos, letters, résumés"] },
+    { "number": 4, "title": "Interpersonal and Group Communication", "hours": 8, "topics": ["Listening, intercultural communication", "Teamwork, leadership communication"] },
+    { "number": 5, "title": "Digital Communication", "hours": 8, "topics": ["Netiquette, online professionalism", "Social media communication, plagiarism"] },
+    { "number": 6, "title": "Professional Ethics", "hours": 8, "topics": ["Ethical dilemmas, persuasion", "Negotiation, conflict resolution in business contexts"] }
+  ]
+}

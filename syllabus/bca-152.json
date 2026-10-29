@@ -1,0 +1,13 @@
+{
+  "code": "BCA 152",
+  "title": "Microprocessor and Computer Architecture",
+  "credits": 3,
+  "totalHours": 48,
+  "description": "Covers computer architecture, instruction cycles, microprocessor components, Intel 8085/8086, and assembly programming.",
+  "units": [
+    { "number": 1, "title": "Introduction to Microprocessor", "hours": 8, "topics": ["Definition and basic components", "Microprocessor vs microcontroller", "Evolution and applications"] },
+    { "number": 2, "title": "8085 Microprocessor", "hours": 12, "topics": ["Architecture and pin diagram", "Instruction set", "Assembly programming"] },
+    { "number": 3, "title": "8086 Microprocessor", "hours": 12, "topics": ["Architecture", "Memory segmentation", "Pipelining"] },
+    { "number": 4, "title": "Basic Computer Architecture and Design", "hours": 16, "topics": ["Bus organization", "Memory organization", "I/O organization", "Instruction cycles"] }
+  ]
+}

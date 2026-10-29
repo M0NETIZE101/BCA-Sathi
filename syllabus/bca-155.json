@@ -1,0 +1,16 @@
+{
+  "code": "BCA 155",
+  "title": "UX/UI Design",
+  "credits": 3,
+  "totalHours": 48,
+  "description": "Covers design principles, concepts, and techniques of UX and UI design, focusing on user interaction, interface components, and prototyping.",
+  "units": [
+    { "number": 1, "title": "Fundamentals of UX and UI", "hours": 6, "topics": ["UX vs UI", "Tasks of UX/UI designers", "UX principles"] },
+    { "number": 2, "title": "User Interaction Design", "hours": 6, "topics": ["Mental models, cognitive models", "Interaction design principles"] },
+    { "number": 3, "title": "User Interface Design", "hours": 8, "topics": ["UI design principles", "Layout, color, typography"] },
+    { "number": 4, "title": "UI Components", "hours": 6, "topics": ["Designing and using UI components (buttons, forms, navigation)"] },
+    { "number": 5, "title": "UI Design Considerations", "hours": 6, "topics": ["Accessibility", "Responsiveness", "Platform guidelines"] },
+    { "number": 6, "title": "Wireframing and Prototyping", "hours": 8, "topics": ["Creating wireframes, mockups", "Interactive prototypes"] },
+    { "number": 7, "title": "Design Evaluations", "hours": 8, "topics": ["Usability testing", "Heuristic evaluation"] }
+  ]
+}

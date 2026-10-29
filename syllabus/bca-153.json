@@ -1,0 +1,15 @@
+{
+  "code": "BCA 153",
+  "title": "OOP in Java",
+  "credits": 3,
+  "totalHours": 48,
+  "description": "Introduction to object-oriented programming using Java, covering classes, objects, inheritance, polymorphism, exception handling, and multithreading.",
+  "units": [
+    { "number": 1, "title": "Introduction to Java and OOP Concept", "hours": 8, "topics": ["Java architecture (JVM, JDK, JRE)", "Procedural vs OOP", "Features of Java"] },
+    { "number": 2, "title": "Basics of Java Programming", "hours": 8, "topics": ["Java tokens, data types, operators", "Control statements"] },
+    { "number": 3, "title": "Classes and Objects", "hours": 8, "topics": ["Defining classes, creating objects", "Constructors", "Method overloading"] },
+    { "number": 4, "title": "Inheritance and Polymorphism", "hours": 8, "topics": ["Types of inheritance", "Method overriding", "Dynamic method dispatch"] },
+    { "number": 5, "title": "Exception Handling and Multithreading", "hours": 8, "topics": ["Try-catch blocks", "Custom exceptions", "Thread lifecycle"] },
+    { "number": 6, "title": "Advanced OOP Concepts", "hours": 8, "topics": ["Abstract classes, interfaces", "Packages", "File handling"] }
+  ]
+}
