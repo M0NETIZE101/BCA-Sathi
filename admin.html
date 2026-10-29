@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin — BCA Sathi</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { background: #fff; }
+    .admin-box { max-width: 560px; margin: 40px auto; padding: 24px; }
+    .admin-box h1 { margin-bottom: 20px; }
+    .admin-box label { display: block; margin-bottom: 14px; font-weight: 600; font-size: 0.9rem; }
+    .admin-box input, .admin-box select {
+      display: block; width: 100%; padding: 10px;
+      border: 1px solid #ddd; border-radius: 8px; margin-top: 4px; font-family: inherit;
+    }
+    .admin-box button { margin-top: 10px; }
+    #status { margin-top: 16px; padding: 12px; border-radius: 8px; font-size: 0.9rem; }
+    .info { background: #f5f9ff; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; color: #444; }
+    .warn { background: #fff8e1; border-left: 3px solid #c9a227; padding: 10px; border-radius: 4px; font-size: 0.82rem; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="admin-box">
+    <h1>Upload Resource</h1>
+
+    <div id="tokenSection">
+      <div class="info">
+        Paste a GitHub <strong>Personal Access Token</strong> (create one at github.com/settings/tokens). It's stored in this browser only.
+      </div>
+      <label>GitHub Token
+        <input id="patInput" type="password" placeholder="ghp_...">
+      </label>
+      <label>Repo (owner/repo)
+        <input id="repoInput" type="text" placeholder="yourname/bca-sathi">
+      </label>
+      <button class="btn btn-primary" id="saveToken">Save & Continue</button>
+    </div>
+
+    <form id="uploadForm" style="display:none;">
+      <label>Semester
+        <select name="semester" required>
+          <option value="1">Semester 1</option><option value="2">Semester 2</option>
+          <option value="3">Semester 3</option><option value="4">Semester 4</option>
+          <option value="5">Semester 5</option><option value="6">Semester 6</option>
+          <option value="7">Semester 7</option><option value="8">Semester 8</option>
+        </select>
+      </label>
+      <label>Subject ID <input name="subjectId" required placeholder="e.g. cacs101-cf"></label>
+      <label>Type
+        <select name="type" required>
+          <option value="notes">Notes</option>
+          <option value="papers">Past Paper</option>
+          <option value="syllabus">Syllabus</option>
+        </select>
+      </label>
+      <label>Title (for notes only) <input name="title" placeholder="e.g. Unit 1 Notes"></label>
+      <label>Year (for papers only) <input name="year" type="number" min="2000" max="2100"></label>
+      <label>PDF File <input name="file" type="file" accept="application/pdf" required></label>
+      <button class="btn btn-primary" type="submit">Upload & Update Site</button>
+      <div class="warn">
+        ⚠️ GitHub's API is reliable up to <strong>~10 MB per file</strong>. For larger PDFs, use GitHub's web uploader instead.
+      </div>
+    </form>
+
+    <p id="status"></p>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const setStatus = (msg, ok) => {
+      $("status").textContent = msg;
+      $("status").style.background = ok ? "#e8f5e9" : "#ffebee";
+      $("status").style.color = ok ? "#1b5e20" : "#b71c1c";
+    };
+
+    let PAT = localStorage.getItem("gh_pat") || "";
+    let REPO = localStorage.getItem("gh_repo") || "";
+
+    function showForm() {
+      $("tokenSection").style.display = "none";
+      $("uploadForm").style.display = "block";
+    }
+
+    if (PAT && REPO) showForm();
+
+    $("saveToken").onclick = () => {
+      const p = $("patInput").value.trim();
+      const r = $("repoInput").value.trim();
+      if (!p || !r.includes("/")) return setStatus("Enter a valid token and owner/repo.", false);
+      PAT = p; REPO = r;
+      localStorage.setItem("gh_pat", p);
+      localStorage.setItem("gh_repo", r);
+      showForm();
+    };
+
+    async function gh(path, opts = {}) {
+      const res = await fetch(`https://api.github.com/repos/${REPO}/${path}`, {
+        ...opts,
+        headers: {
+          "Authorization": `Bearer ${PAT}`,
+          "Accept": "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          ...(opts.headers || {}),
+        },
+      });
+      return res;
+    }
+
+    async function getFileSha(path) {
+      const res = await gh(`contents/${path}`);
+      if (res.status === 404) return null;
+      const data = await res.json();
+      return data.sha;
+    }
+
+    async function putFile(path, base64, message) {
+      const sha = await getFileSha(path);
+      const body = { message, content: base64, branch: "main" };
+      if (sha) body.sha = sha;
+      const res = await gh(`contents/${path}`, {
+        method: "PUT",
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(`GitHub ${res.status}: ${await res.text()}`);
+    }
+
+    function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(",")[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function safeName(name) {
+      return name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    }
+
+    $("uploadForm").onsubmit = async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+      const file = data.get("file");
+      const semester = data.get("semester");
+      const subjectId = data.get("subjectId").trim();
+      const type = data.get("type");
+      const year = data.get("year");
+      const title = data.get("title").trim();
+
+      if (!file || file.size === 0) return setStatus("Choose a PDF file.", false);
+      if (file.size > 20 * 1024 * 1024) return setStatus("File too large (max 20 MB).", false);
+      if (type === "papers" && !year) return setStatus("Year is required for papers.", false);
+
+      try {
+        setStatus("Uploading PDF…", true);
+
+        const filename = `${type === "papers" ? year : type === "syllabus" ? "syllabus" : safeName(file.name.replace(/\.pdf$/i, ""))}.pdf`;
+        const pdfPath = `pdfs/sem${semester}/${subjectId}/${filename}`;
+        const pdfB64 = await toBase64(file);
+        await putFile(pdfPath, pdfB64, `Add ${filename} to sem${semester}/${subjectId}`);
+
+        setStatus("Updating data.json…", true);
+
+        // Fetch current data.json
+        const res = await gh(`contents/data.json`);
+        if (!res.ok) throw new Error("Could not read data.json");
+        const dataFile = await res.json();
+        const current = JSON.parse(atob(dataFile.content));
+
+        // Find semester + subject, or create subject if missing
+        let sem = current.semesters.find(s => s.id === +semester);
+        if (!sem) { sem = { id: +semester, name: `Semester ${semester}`, tagline: "", subjects: [] }; current.semesters.push(sem); }
+
+        let subj = sem.subjects.find(s => s.id === subjectId);
+        if (!subj) {
+          subj = { id: subjectId, name: subjectId, code: "", syllabus: null, notes: [], papers: [] };
+          sem.subjects.push(subj);
+        }
+
+        const sizeMB = +(file.size / (1024 * 1024)).toFixed(1);
+        const entry = { file: pdfPath, sizeMB };
+
+        if (type === "papers") { entry.year = +year; subj.papers.push(entry); }
+        else if (type === "notes") { entry.title = title || file.name; subj.notes.push(entry); }
+        else { subj.syllabus = entry; }
+
+        const updatedB64 = btoa(unescape(encodeURIComponent(JSON.stringify(current, null, 2))));
+        await putFile("data.json", updatedB64, `Update manifest: ${pdfPath}`);
+
+        setStatus("✅ Done. Cloudflare Pages will redeploy in ~1 minute.", true);
+        form.reset();
+      } catch (err) {
+        setStatus(`❌ ${err.message}`, false);
+      }
+    };
+  </script>
+</body>
+</html>

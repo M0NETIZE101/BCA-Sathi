@@ -1,0 +1,28 @@
+{
+  "semesters": [
+    {
+      "id": 1,
+      "name": "Semester 1",
+      "tagline": "Foundation",
+      "subjects": [
+        {
+          "id": "cacs101-cf",
+          "name": "Computer Fundamentals & Applications",
+          "code": "CACS101",
+          "syllabus": { "file": "pdfs/sem1/cacs101/syllabus.pdf", "sizeMB": 0.4 },
+          "notes": [],
+          "papers": [
+            { "year": 2081, "file": "pdfs/sem1/cacs101/2081.pdf", "sizeMB": 1.8 }
+          ]
+        }
+      ]
+    },
+    { "id": 2, "name": "Semester 2", "tagline": "Core Programming", "subjects": [] },
+    { "id": 3, "name": "Semester 3", "tagline": "Data & Systems", "subjects": [] },
+    { "id": 4, "name": "Semester 4", "tagline": "Networking & DBMS", "subjects": [] },
+    { "id": 5, "name": "Semester 5", "tagline": "Web & Mobile", "subjects": [] },
+    { "id": 6, "name": "Semester 6", "tagline": "Advanced Applications", "subjects": [] },
+    { "id": 7, "name": "Semester 7", "tagline": "Specialisation", "subjects": [] },
+    { "id": 8, "name": "Semester 8", "tagline": "Project & Capstone", "subjects": [] }
+  ]
+}
