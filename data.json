@@ -6,60 +6,12 @@
       "name": "Semester 1",
       "tagline": "Foundation",
       "subjects": [
-        {
-          "id": "bca-101",
-          "name": "Computer Fundamentals and Applications",
-          "code": "BCA 101",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-102",
-          "name": "Programming in C",
-          "code": "BCA 102",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-103",
-          "name": "Digital Logic",
-          "code": "BCA 103",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-104",
-          "name": "Mathematics I",
-          "code": "BCA 104",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-105",
-          "name": "Professional Communication and Ethics",
-          "code": "BCA 105",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-106",
-          "name": "Hardware Workshop",
-          "code": "BCA 106",
-          "credits": 1,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        }
+        { "id": "bca-101", "name": "Computer Fundamentals and Applications", "code": "BCA 101", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-101.json", "notes": [], "papers": [] },
+        { "id": "bca-102", "name": "Programming in C", "code": "BCA 102", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-102.json", "notes": [], "papers": [] },
+        { "id": "bca-103", "name": "Digital Logic", "code": "BCA 103", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-103.json", "notes": [], "papers": [] },
+        { "id": "bca-104", "name": "Mathematics I", "code": "BCA 104", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-104.json", "notes": [], "papers": [] },
+        { "id": "bca-105", "name": "Professional Communication and Ethics", "code": "BCA 105", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-105.json", "notes": [], "papers": [] },
+        { "id": "bca-106", "name": "Hardware Workshop", "code": "BCA 106", "credits": 1, "syllabus": null, "syllabusData": "syllabus/bca-106.json", "notes": [], "papers": [] }
       ]
     },
     {
@@ -73,12 +25,9 @@
           "code": "BCA 151",
           "credits": 3,
           "syllabus": null,
+          "syllabusData": "syllabus/bca-151.json",
           "notes": [
-            {
-              "title": "Unit 1- Fundamental of Logic and Proof Techniques",
-              "file": "pdfs/sem2/bca-151/unit-1-fundamental-of-logic-and-proof-techniques-o3r3.pdf",
-              "sizeMB": 1.4
-            }
+            { "title": "Unit 1- Fundamental of Logic and Proof Techniques", "file": "pdfs/sem2/bca-151/unit-1-fundamental-of-logic-and-proof-techniques-o3r3.pdf", "sizeMB": 1.4 }
           ],
           "papers": []
         },
@@ -88,92 +37,34 @@
           "code": "BCA 152",
           "credits": 3,
           "syllabus": null,
+          "syllabusData": "syllabus/bca-152.json",
           "notes": [
-            {
-              "title": "Microprocessor and Computer Architecture[Book]",
-              "file": "pdfs/sem2/bca-152/microprocessor-and-computer-architecture-o3v6.pdf",
-              "sizeMB": 3.4
-            }
+            { "title": "Microprocessor and Computer Architecture[Book]", "file": "pdfs/sem2/bca-152/microprocessor-and-computer-architecture-o3v6.pdf", "sizeMB": 3.4 }
           ],
           "papers": []
         },
-        {
-          "id": "bca-153",
-          "name": "OOP in Java",
-          "code": "BCA 153",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-154",
-          "name": "Mathematics II",
-          "code": "BCA 154",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
+        { "id": "bca-153", "name": "OOP in Java", "code": "BCA 153", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-153.json", "notes": [], "papers": [] },
+        { "id": "bca-154", "name": "Mathematics II", "code": "BCA 154", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-154.json", "notes": [], "papers": [] },
         {
           "id": "bca-155",
           "name": "UX/UI Design",
           "code": "BCA 155",
           "credits": 3,
           "syllabus": null,
+          "syllabusData": "syllabus/bca-155.json",
           "notes": [
-            {
-              "title": "Fundamentals of UX and UI",
-              "file": "pdfs/sem2/bca-155/ch-1-note-o3ze.pdf",
-              "sizeMB": 0.3
-            },
-            {
-              "title": "Unit 2:User Interaction Design",
-              "file": "pdfs/sem2/bca-155/ch-2-note-o41t.pdf",
-              "sizeMB": 0.1
-            },
-            {
-              "title": "Unit 3:",
-              "file": "pdfs/sem2/bca-155/ch-3-note-o45c.pdf",
-              "sizeMB": 0.4
-            },
-            {
-              "title": "Unit 4:",
-              "file": "pdfs/sem2/bca-155/ch-4-note-o497.pdf",
-              "sizeMB": 0.2
-            },
-            {
-              "title": "Unit 5:",
-              "file": "pdfs/sem2/bca-155/ch-5-note-o4af.pdf",
-              "sizeMB": 0.4
-            },
-            {
-              "title": "Unit 6:",
-              "file": "pdfs/sem2/bca-155/ch-6-note-o4av.pdf",
-              "sizeMB": 0.2
-            },
-            {
-              "title": "Unit 8:",
-              "file": "pdfs/sem2/bca-155/ch-8-note-o4c2.pdf",
-              "sizeMB": 0.2
-            },
-            {
-              "title": "Unit 7:",
-              "file": "pdfs/sem2/bca-155/ch-7-note-o4qq.pdf",
-              "sizeMB": 0.2
-            }
+            { "title": "Fundamentals of UX and UI", "file": "pdfs/sem2/bca-155/ch-1-note-o3ze.pdf", "sizeMB": 0.3 },
+            { "title": "Unit 2:User Interaction Design", "file": "pdfs/sem2/bca-155/ch-2-note-o41t.pdf", "sizeMB": 0.1 },
+            { "title": "Unit 3:", "file": "pdfs/sem2/bca-155/ch-3-note-o45c.pdf", "sizeMB": 0.4 },
+            { "title": "Unit 4:", "file": "pdfs/sem2/bca-155/ch-4-note-o497.pdf", "sizeMB": 0.2 },
+            { "title": "Unit 5:", "file": "pdfs/sem2/bca-155/ch-5-note-o4af.pdf", "sizeMB": 0.4 },
+            { "title": "Unit 6:", "file": "pdfs/sem2/bca-155/ch-6-note-o4av.pdf", "sizeMB": 0.2 },
+            { "title": "Unit 8:", "file": "pdfs/sem2/bca-155/ch-8-note-o4c2.pdf", "sizeMB": 0.2 },
+            { "title": "Unit 7:", "file": "pdfs/sem2/bca-155/ch-7-note-o4qq.pdf", "sizeMB": 0.2 }
           ],
           "papers": []
         },
-        {
-          "id": "bca-156",
-          "name": "Principles of Management",
-          "code": "BCA 156",
-          "credits": 1,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        }
+        { "id": "bca-156", "name": "Principles of Management", "code": "BCA 156", "credits": 1, "syllabus": null, "syllabusData": "syllabus/bca-156.json", "notes": [], "papers": [] }
       ]
     },
     {
@@ -181,60 +72,12 @@
       "name": "Semester 3",
       "tagline": "Data & Systems",
       "subjects": [
-        {
-          "id": "bca-201",
-          "name": "Data Structure and Algorithms",
-          "code": "BCA 201",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-202",
-          "name": "Database Management System",
-          "code": "BCA 202",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-203",
-          "name": "Web Technology I",
-          "code": "BCA 203",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-204",
-          "name": "System Analysis and Design",
-          "code": "BCA 204",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-205",
-          "name": "Probability and Statistics",
-          "code": "BCA 205",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-206",
-          "name": "Applied Economics",
-          "code": "BCA 206",
-          "credits": 2,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        }
+        { "id": "bca-201", "name": "Data Structure and Algorithms", "code": "BCA 201", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-201.json", "notes": [], "papers": [] },
+        { "id": "bca-202", "name": "Database Management System", "code": "BCA 202", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-202.json", "notes": [], "papers": [] },
+        { "id": "bca-203", "name": "Web Technology I", "code": "BCA 203", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-203.json", "notes": [], "papers": [] },
+        { "id": "bca-204", "name": "System Analysis and Design", "code": "BCA 204", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-204.json", "notes": [], "papers": [] },
+        { "id": "bca-205", "name": "Probability and Statistics", "code": "BCA 205", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-205.json", "notes": [], "papers": [] },
+        { "id": "bca-206", "name": "Applied Economics", "code": "BCA 206", "credits": 2, "syllabus": null, "syllabusData": "syllabus/bca-206.json", "notes": [], "papers": [] }
       ]
     },
     {
@@ -242,60 +85,12 @@
       "name": "Semester 4",
       "tagline": "Networking & DBMS",
       "subjects": [
-        {
-          "id": "bca-251",
-          "name": "Operating Systems",
-          "code": "BCA 251",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-252",
-          "name": "Software Engineering",
-          "code": "BCA 252",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-253",
-          "name": "Numerical Methods",
-          "code": "BCA 253",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-254",
-          "name": "Python Programming",
-          "code": "BCA 254",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-255",
-          "name": "Web Technology II",
-          "code": "BCA 255",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-256",
-          "name": "Project I",
-          "code": "BCA 256",
-          "credits": 2,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        }
+        { "id": "bca-251", "name": "Operating Systems", "code": "BCA 251", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-251.json", "notes": [], "papers": [] },
+        { "id": "bca-252", "name": "Software Engineering", "code": "BCA 252", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-252.json", "notes": [], "papers": [] },
+        { "id": "bca-253", "name": "Numerical Methods", "code": "BCA 253", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-253.json", "notes": [], "papers": [] },
+        { "id": "bca-254", "name": "Python Programming", "code": "BCA 254", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-254.json", "notes": [], "papers": [] },
+        { "id": "bca-255", "name": "Web Technology II", "code": "BCA 255", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-255.json", "notes": [], "papers": [] },
+        { "id": "bca-256", "name": "Project I", "code": "BCA 256", "credits": 2, "syllabus": null, "syllabusData": "syllabus/bca-256.json", "notes": [], "papers": [] }
       ]
     },
     {
@@ -303,60 +98,12 @@
       "name": "Semester 5",
       "tagline": "Web & Mobile",
       "subjects": [
-        {
-          "id": "bca-301",
-          "name": "Computer Network",
-          "code": "BCA 301",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-302",
-          "name": "Artificial Intelligence",
-          "code": "BCA 302",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-303",
-          "name": "Advance Java Programming",
-          "code": "BCA 303",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-304",
-          "name": "MIS and e-Business",
-          "code": "BCA 304",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-305",
-          "name": "Society and Technology",
-          "code": "BCA 305",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-306",
-          "name": "Project II",
-          "code": "BCA 306",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        }
+        { "id": "bca-301", "name": "Computer Network", "code": "BCA 301", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-301.json", "notes": [], "papers": [] },
+        { "id": "bca-302", "name": "Artificial Intelligence", "code": "BCA 302", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-302.json", "notes": [], "papers": [] },
+        { "id": "bca-303", "name": "Advance Java Programming", "code": "BCA 303", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-303.json", "notes": [], "papers": [] },
+        { "id": "bca-304", "name": "MIS and e-Business", "code": "BCA 304", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-304.json", "notes": [], "papers": [] },
+        { "id": "bca-305", "name": "Society and Technology", "code": "BCA 305", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-305.json", "notes": [], "papers": [] },
+        { "id": "bca-306", "name": "Project II", "code": "BCA 306", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-306.json", "notes": [], "papers": [] }
       ]
     },
     {
@@ -364,60 +111,12 @@
       "name": "Semester 6",
       "tagline": "Advanced Applications",
       "subjects": [
-        {
-          "id": "bca-351",
-          "name": "Computer Graphics and Animation",
-          "code": "BCA 351",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-352",
-          "name": "Mobile Programming",
-          "code": "BCA 352",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-353",
-          "name": "Cryptography and Network Security",
-          "code": "BCA 353",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-354",
-          "name": "Technical Writing",
-          "code": "BCA 354",
-          "credits": 2,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-355",
-          "name": "Distributed System",
-          "code": "BCA 355",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-356",
-          "name": "Project III",
-          "code": "BCA 356",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        }
+        { "id": "bca-351", "name": "Computer Graphics and Animation", "code": "BCA 351", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-351.json", "notes": [], "papers": [] },
+        { "id": "bca-352", "name": "Mobile Programming", "code": "BCA 352", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-352.json", "notes": [], "papers": [] },
+        { "id": "bca-353", "name": "Cryptography and Network Security", "code": "BCA 353", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-353.json", "notes": [], "papers": [] },
+        { "id": "bca-354", "name": "Technical Writing", "code": "BCA 354", "credits": 2, "syllabus": null, "syllabusData": "syllabus/bca-354.json", "notes": [], "papers": [] },
+        { "id": "bca-355", "name": "Distributed System", "code": "BCA 355", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-355.json", "notes": [], "papers": [] },
+        { "id": "bca-356", "name": "Project III", "code": "BCA 356", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-356.json", "notes": [], "papers": [] }
       ]
     },
     {
@@ -425,114 +124,18 @@
       "name": "Semester 7",
       "tagline": "Specialisation",
       "subjects": [
-        {
-          "id": "bca-401",
-          "name": "Cyber Security and Ethical Hacking",
-          "code": "BCA 401",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-402",
-          "name": "Software Project Management",
-          "code": "BCA 402",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-403",
-          "name": "Financial Accounting",
-          "code": "BCA 403",
-          "credits": 2,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-404",
-          "name": "Project IV",
-          "code": "BCA 404",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-404-i",
-          "name": "Machine Learning (Elective)",
-          "code": "BCA 404-I",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-404-ii",
-          "name": "E-Commerce (Elective)",
-          "code": "BCA 404-II",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-404-iii",
-          "name": "Database Administration (Elective)",
-          "code": "BCA 404-III",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-404-iv",
-          "name": "Linux (Elective)",
-          "code": "BCA 404-IV",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-405-i",
-          "name": "Dotnet Technology (Elective)",
-          "code": "BCA 405-I",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-405-ii",
-          "name": "Business Intelligence (Elective)",
-          "code": "BCA 405-II",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-405-iii",
-          "name": "Software Testing and Quality Assurance (Elective)",
-          "code": "BCA 405-III",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-405-iv",
-          "name": "Data Visualization (Elective)",
-          "code": "BCA 405-IV",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        }
+        { "id": "bca-401", "name": "Cyber Security and Ethical Hacking", "code": "BCA 401", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-401.json", "notes": [], "papers": [] },
+        { "id": "bca-402", "name": "Software Project Management", "code": "BCA 402", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-402.json", "notes": [], "papers": [] },
+        { "id": "bca-403", "name": "Financial Accounting", "code": "BCA 403", "credits": 2, "syllabus": null, "syllabusData": "syllabus/bca-403.json", "notes": [], "papers": [] },
+        { "id": "bca-404", "name": "Project IV", "code": "BCA 404", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-404.json", "notes": [], "papers": [] },
+        { "id": "bca-404-i", "name": "Machine Learning (Elective)", "code": "BCA 404-I", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-404-i.json", "notes": [], "papers": [] },
+        { "id": "bca-404-ii", "name": "E-Commerce (Elective)", "code": "BCA 404-II", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-404-ii.json", "notes": [], "papers": [] },
+        { "id": "bca-404-iii", "name": "Database Administration (Elective)", "code": "BCA 404-III", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-404-iii.json", "notes": [], "papers": [] },
+        { "id": "bca-404-iv", "name": "Linux (Elective)", "code": "BCA 404-IV", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-404-iv.json", "notes": [], "papers": [] },
+        { "id": "bca-405-i", "name": "Dotnet Technology (Elective)", "code": "BCA 405-I", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-405-i.json", "notes": [], "papers": [] },
+        { "id": "bca-405-ii", "name": "Business Intelligence (Elective)", "code": "BCA 405-II", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-405-ii.json", "notes": [], "papers": [] },
+        { "id": "bca-405-iii", "name": "Software Testing and Quality Assurance (Elective)", "code": "BCA 405-III", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-405-iii.json", "notes": [], "papers": [] },
+        { "id": "bca-405-iv", "name": "Data Visualization (Elective)", "code": "BCA 405-IV", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-405-iv.json", "notes": [], "papers": [] }
       ]
     },
     {
@@ -540,96 +143,16 @@
       "name": "Semester 8",
       "tagline": "Project & Capstone",
       "subjects": [
-        {
-          "id": "bca-451",
-          "name": "Cloud Computing",
-          "code": "BCA 451",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-452",
-          "name": "Internship",
-          "code": "BCA 452",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-453-i",
-          "name": "Network Administration (Elective)",
-          "code": "BCA 453-I",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-453-ii",
-          "name": "E-governance (Elective)",
-          "code": "BCA 453-II",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-453-iii",
-          "name": "Database Programming (Elective)",
-          "code": "BCA 453-III",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-453-iv",
-          "name": "Geographical Information System (Elective)",
-          "code": "BCA 453-IV",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-454-i",
-          "name": "Digital Marketing and SEO (Elective)",
-          "code": "BCA 454-I",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-454-ii",
-          "name": "Image Processing (Elective)",
-          "code": "BCA 454-II",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-454-iii",
-          "name": "Internet of Things (Elective)",
-          "code": "BCA 454-III",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        },
-        {
-          "id": "bca-454-iv",
-          "name": "Data Mining and Data Warehouse (Elective)",
-          "code": "BCA 454-IV",
-          "credits": 3,
-          "syllabus": null,
-          "notes": [],
-          "papers": []
-        }
+        { "id": "bca-451", "name": "Cloud Computing", "code": "BCA 451", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-451.json", "notes": [], "papers": [] },
+        { "id": "bca-452", "name": "Internship", "code": "BCA 452", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-452.json", "notes": [], "papers": [] },
+        { "id": "bca-453-i", "name": "Network Administration (Elective)", "code": "BCA 453-I", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-453-i.json", "notes": [], "papers": [] },
+        { "id": "bca-453-ii", "name": "E-governance (Elective)", "code": "BCA 453-II", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-453-ii.json", "notes": [], "papers": [] },
+        { "id": "bca-453-iii", "name": "Database Programming (Elective)", "code": "BCA 453-III", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-453-iii.json", "notes": [], "papers": [] },
+        { "id": "bca-453-iv", "name": "Geographical Information System (Elective)", "code": "BCA 453-IV", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-453-iv.json", "notes": [], "papers": [] },
+        { "id": "bca-454-i", "name": "Digital Marketing and SEO (Elective)", "code": "BCA 454-I", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-454-i.json", "notes": [], "papers": [] },
+        { "id": "bca-454-ii", "name": "Image Processing (Elective)", "code": "BCA 454-II", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-454-ii.json", "notes": [], "papers": [] },
+        { "id": "bca-454-iii", "name": "Internet of Things (Elective)", "code": "BCA 454-III", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-454-iii.json", "notes": [], "papers": [] },
+        { "id": "bca-454-iv", "name": "Data Mining and Data Warehouse (Elective)", "code": "BCA 454-IV", "credits": 3, "syllabus": null, "syllabusData": "syllabus/bca-454-iv.json", "notes": [], "papers": [] }
       ]
     }
   ]
