@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subject — BCA Sathi</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="subject">
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">BCA <span>Sathi</span></a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <div class="dropdown">
+          <button class="dropbtn">Semesters ▾</button>
+          <div class="dropdown-content" id="semesterDropdown"></div>
+        </div>
+        <a href="index.html#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="breadcrumb" id="bcSubject"></p>
+    <h1 id="subjTitle">Subject</h1>
+    <p class="muted" id="subjCode"></p>
+
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-tab="papers">📝 Past Papers</button>
+      <button class="tab" data-tab="notes">📄 Notes</button>
+      <button class="tab" data-tab="syllabus">📚 Syllabus</button>
+    </div>
+
+    <div id="tabContent" class="tab-content"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 BCA Sathi · Free TU BCA resources.</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
