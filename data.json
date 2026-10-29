@@ -88,7 +88,13 @@
           "code": "BCA 152",
           "credits": 3,
           "syllabus": null,
-          "notes": [],
+          "notes": [
+            {
+              "title": "Microprocessor and Computer Architecture[Book]",
+              "file": "pdfs/sem2/bca-152/microprocessor-and-computer-architecture-o3v6.pdf",
+              "sizeMB": 3.4
+            }
+          ],
           "papers": []
         },
         {
