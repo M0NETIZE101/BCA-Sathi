@@ -1,4 +1,4 @@
-// BCA Sathi — app logic
+
 const page = document.body.dataset.page;
 const params = new URLSearchParams(location.search);
 
